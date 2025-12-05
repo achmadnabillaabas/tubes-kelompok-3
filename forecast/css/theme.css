@@ -1,0 +1,100 @@
+/**
+ * Theme CSS - Variabel Palet Warna & Tema
+ * Palet dari: https://colorhunt.co/palette/bdd8f182a6cb3667a6214177
+ */
+
+:root {
+    /* Color Palette */
+    --color-base: #BDD8F1;        /* Background lembut, card terang */
+    --color-secondary: #82A6CB;   /* Aksen, hover, border lembut */
+    --color-primary: #3667A6;     /* Tombol utama, judul, link */
+    --color-dark: #214177;        /* Navbar, footer, teks kontras */
+    
+    /* Extended Colors */
+    --color-white: #FFFFFF;
+    --color-light: #F5F9FC;
+    --color-text: #2C3E50;
+    --color-text-light: #7F8C8D;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    --gradient-dark: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
+    --gradient-overlay: linear-gradient(180deg, rgba(33, 65, 119, 0.7) 0%, rgba(54, 103, 166, 0.5) 100%);
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 4px rgba(33, 65, 119, 0.1);
+    --shadow-md: 0 4px 8px rgba(33, 65, 119, 0.15);
+    --shadow-lg: 0 8px 16px rgba(33, 65, 119, 0.2);
+    --shadow-xl: 0 12px 24px rgba(33, 65, 119, 0.25);
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+    
+    /* Typography */
+    --font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-size-xs: 0.75rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.125rem;
+    --font-size-xl: 1.25rem;
+    --font-size-2xl: 1.5rem;
+    --font-size-3xl: 2rem;
+    --font-size-4xl: 3rem;
+    --font-size-5xl: 4rem;
+    
+    /* Transitions */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+    
+    /* Z-index */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+}
+
+/* Dark Mode Variables (Optional - untuk pengembangan lebih lanjut) */
+[data-theme="dark"] {
+    --color-base: #1a2332;
+    --color-secondary: #2d3e50;
+    --color-primary: #5a9fd4;
+    --color-dark: #0f1419;
+    --color-white: #1a2332;
+    --color-light: #2d3e50;
+    --color-text: #e4e6eb;
+    --color-text-light: #b0b3b8;
+}
+
+/* UV Level Colors */
+:root {
+    --uv-low: #4CAF50;
+    --uv-moderate: #FFC107;
+    --uv-high: #FF9800;
+    --uv-very-high: #F44336;
+    --uv-extreme: #9C27B0;
+}
+
+/* Weather Condition Colors */
+:root {
+    --weather-clear: #FFD700;
+    --weather-clouds: #B0BEC5;
+    --weather-rain: #64B5F6;
+    --weather-storm: #5C6BC0;
+    --weather-snow: #E3F2FD;
+}
