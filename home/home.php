@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WeatherApp - Cek Cuaca Real-time</title>
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -12,6 +13,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
     <!-- Hero Section -->
     <div class="hero-section">
@@ -25,7 +27,7 @@
                 </div>
             </label>
         </div>
-        
+
         <div class="container">
             <h1><span class="emoji-3d">⛅</span> Selamat Datang di WeatherApp</h1>
             <p>Cek kondisi cuaca dan prakiraan 5 hari ke depan untuk kota mana pun!</p>
@@ -46,9 +48,11 @@
             <h3 class="text-center"><span class="emoji-3d">📍</span> Cari Cuaca Kota</h3>
             <form id="weatherForm">
                 <div class="mb-3">
-                    <input type="text" class="form-control" id="cityInput" placeholder="Masukkan nama kota (contoh: Jakarta, Kediri, Bandung)" required>
+                    <input type="text" class="form-control" id="cityInput"
+                        placeholder="Masukkan nama kota (contoh: Jakarta, Kediri, Bandung)" required>
                     <small class="text-muted">
-                        <span class="emoji-3d">💡</span> Tips: Gunakan format NamaKota,KodeNegara untuk hasil akurat (contoh: Bandung,ID)
+                        <span class="emoji-3d">💡</span> Tips: Gunakan format NamaKota,KodeNegara untuk hasil akurat
+                        (contoh: Bandung,ID)
                     </small>
                 </div>
                 <div class="row mb-3">
@@ -65,14 +69,14 @@
                     </div>
                 </div>
             </form>
-            
+
             <div class="loading">
                 <div class="spinner-border text-primary" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>
                 <p class="mt-2">Mengambil data cuaca...</p>
             </div>
-            
+
             <div class="weather-result" id="weatherResult"></div>
         </div>
 
@@ -92,11 +96,13 @@
                         </div>
                     </div>
                 </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselCities" data-bs-slide="prev">
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselCities"
+                    data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Previous</span>
                 </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselCities" data-bs-slide="next">
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselCities"
+                    data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
                     <span class="visually-hidden">Next</span>
                 </button>
@@ -141,19 +147,22 @@
         <!-- Testimonials Section -->
         <div class="my-5">
             <h2 class="section-title"><span class="emoji-3d">💬</span> Testimoni Pengguna</h2>
-            
+
             <!-- Form Testimoni -->
             <div class="testimonial-form-card mb-4">
                 <h4><span class="emoji-3d">✍️</span> Tulis Testimoni Anda</h4>
                 <form id="testimonialForm">
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="testimonialName" placeholder="Nama Anda" required maxlength="50">
+                        <input type="text" class="form-control" id="testimonialName" placeholder="Nama Anda" required
+                            maxlength="50">
                     </div>
                     <div class="mb-3">
-                        <input type="text" class="form-control" id="testimonialCity" placeholder="Kota Anda" required maxlength="50">
+                        <input type="text" class="form-control" id="testimonialCity" placeholder="Kota Anda" required
+                            maxlength="50">
                     </div>
                     <div class="mb-3">
-                        <textarea class="form-control" id="testimonialMessage" rows="3" placeholder="Tulis testimoni Anda di sini..." required maxlength="200"></textarea>
+                        <textarea class="form-control" id="testimonialMessage" rows="3"
+                            placeholder="Tulis testimoni Anda di sini..." required maxlength="200"></textarea>
                         <small class="text-muted"><span id="charCount">0</span>/200 karakter</small>
                     </div>
                     <button type="submit" class="btn btn-search">
@@ -161,7 +170,7 @@
                     </button>
                 </form>
             </div>
-            
+
             <!-- Testimoni List -->
             <div class="row" id="testimonialList">
                 <div class="col-md-6">
@@ -225,4 +234,5 @@
     <!-- Custom JS -->
     <script src="js/weather.js"></script>
 </body>
+
 </html>
