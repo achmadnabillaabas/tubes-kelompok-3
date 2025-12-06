@@ -1,0 +1,8 @@
+Folder ini berisi file background GIF untuk berbagai kondisi cuaca:
+- sunny.gif: Background untuk cuaca cerah
+- cloudy.gif: Background untuk cuaca berawan
+- rainy.gif: Background untuk cuaca hujan
+- storm.gif: Background untuk badai
+- night.gif: Background untuk malam hari
+
+Sementara ini, sistem menggunakan CSS gradient sebagai fallback.
