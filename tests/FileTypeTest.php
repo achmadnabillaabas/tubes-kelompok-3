@@ -5,7 +5,6 @@ class FileTypeTest extends TestCase
 {
     private $projectFiles = [
         'main.php',
-    
     ];
 
     /**
