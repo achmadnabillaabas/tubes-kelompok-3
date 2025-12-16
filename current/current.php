@@ -249,10 +249,10 @@ $weatherData = getWeatherData($searchQuery);
                 <!-- Search Bar -->
                 <div class="search-section">
                     <form class="search-form" method="GET" action="">
-                        <input type="text" 
-                               name="city" 
-                               class="search-input" 
-                               placeholder="Cari kota (contoh: Jakarta, Bandung, Surabaya)..." 
+                        <input type="text"
+                               name="city"
+                               class="search-input"
+                               placeholder="Cari kota (contoh: Jakarta, Bandung, Surabaya)..."
                                value="<?php echo isset($_GET['city']) ? htmlspecialchars($_GET['city']) : ''; ?>">
                         <button type="submit" class="search-btn">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -289,7 +289,7 @@ $weatherData = getWeatherData($searchQuery);
                         </div>
                         <div class="detail-box">
                             <span class="detail-label">Angin</span>
-                            <span class="detail-value"><?php 
+                            <span class="detail-value"><?php
                                 $windSpeed = round($weatherData['current']['wind_kph'] ?? 0);
                                 echo $windSpeed . ' km/j';
                             ?></span>
@@ -391,7 +391,7 @@ $weatherData = getWeatherData($searchQuery);
                                 $dayDate = date('j', strtotime($day['date']));
                                 $isToday = $index === 0;
                             ?>
-                                <div class="forecast-day-item <?php echo $isToday ? 'active' : ''; ?>" 
+                                <div class="forecast-day-item <?php echo $isToday ? 'active' : ''; ?>"
                                      data-day="<?php echo $index; ?>"
                                      data-date="<?php echo $day['date']; ?>">
                                     <div class="day-header">
@@ -399,8 +399,8 @@ $weatherData = getWeatherData($searchQuery);
                                         <span class="day-date"><?php echo $dayDate; ?></span>
                                     </div>
                                     <div class="day-icon-wrapper">
-                                        <img src="<?php echo htmlspecialchars($day['day']['condition']['icon'] ?? ''); ?>" 
-                                             alt="<?php echo htmlspecialchars($day['day']['condition']['text'] ?? ''); ?>" 
+                                        <img src="<?php echo htmlspecialchars($day['day']['condition']['icon'] ?? ''); ?>"
+                                             alt="<?php echo htmlspecialchars($day['day']['condition']['text'] ?? ''); ?>"
                                              class="day-icon-img"
                                              onerror="this.style.display='none'">
                                     </div>
@@ -446,8 +446,8 @@ $weatherData = getWeatherData($searchQuery);
                             <div class="hourly-icons">
                                 <?php foreach ($hourlyData as $hour): ?>
                                     <div class="hourly-icon-item">
-                                        <img src="<?php echo htmlspecialchars($hour['icon']); ?>" 
-                                             alt="<?php echo htmlspecialchars($hour['condition']); ?>" 
+                                        <img src="<?php echo htmlspecialchars($hour['icon']); ?>"
+                                             alt="<?php echo htmlspecialchars($hour['condition']); ?>"
                                              class="hourly-icon-img"
                                              onerror="this.style.display='none'">
                                         <span class="hourly-time"><?php echo $hour['time']; ?></span>
