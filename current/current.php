@@ -77,12 +77,12 @@ $weatherData = getWeatherData($searchQuery);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <meta name="description" content="Weather forecast application with real-time data">
-    <title>Weather App</title>
+    <meta name="description" content="Aplikasi prakiraan cuaca dengan data real-time">
+    <title>Aplikasi Cuaca</title>
     <link rel="stylesheet" href="css/style.css">
     <style>
         /* Loading Screen */
@@ -137,7 +137,7 @@ $weatherData = getWeatherData($searchQuery);
     <!-- Loading Screen -->
     <div id="loadingScreen" class="loading-screen">
         <div class="loading-spinner"></div>
-        <div class="loading-text">Loading weather data...</div>
+        <div class="loading-text">Memuat data cuaca...</div>
     </div>
     <?php if ($weatherData && isset($weatherData['location'])): 
         // Use location's local time for accurate time display
@@ -238,11 +238,11 @@ $weatherData = getWeatherData($searchQuery);
         $cloudCover = $weatherData['current']['cloud'] ?? 0;
         
         // UV Index level
-        $uvLevel = 'Low';
-        if ($uvIndex >= 11) $uvLevel = 'Extreme';
-        elseif ($uvIndex >= 8) $uvLevel = 'Very High';
-        elseif ($uvIndex >= 6) $uvLevel = 'High';
-        elseif ($uvIndex >= 3) $uvLevel = 'Moderate';
+        $uvLevel = 'Rendah';
+        if ($uvIndex >= 11) $uvLevel = 'Ekstrem';
+        elseif ($uvIndex >= 8) $uvLevel = 'Sangat Tinggi';
+        elseif ($uvIndex >= 6) $uvLevel = 'Tinggi';
+        elseif ($uvIndex >= 3) $uvLevel = 'Sedang';
     ?>
         <div class="weather-app">
             <div class="main-container">
@@ -252,7 +252,7 @@ $weatherData = getWeatherData($searchQuery);
                         <input type="text" 
                                name="city" 
                                class="search-input" 
-                               placeholder="Search city (e.g., Jakarta, Bandung, Surabaya)..." 
+                               placeholder="Cari kota (contoh: Jakarta, Bandung, Surabaya)..." 
                                value="<?php echo isset($_GET['city']) ? htmlspecialchars($_GET['city']) : ''; ?>">
                         <button type="submit" class="search-btn">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -260,11 +260,11 @@ $weatherData = getWeatherData($searchQuery);
                                 <path d="m21 21-4.35-4.35"></path>
                             </svg>
                         </button>
-                        <button type="button" class="location-btn" id="useLocationBtn" title="Use My Location">
+                        <button type="button" class="location-btn" id="useLocationBtn" title="Gunakan Lokasi Saya">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
                             </svg>
-                            <span>My Location</span>
+                            <span>Lokasi Saya</span>
                         </button>
                     </form>
                 </div>
@@ -278,36 +278,36 @@ $weatherData = getWeatherData($searchQuery);
                     <div class="current-weather-main">
                         <div class="current-temp"><?php echo round($weatherData['current']['temp_c'] ?? 0); ?>°<span class="temp-unit">C</span></div>
                         <div class="current-condition"><?php echo htmlspecialchars($weatherData['current']['condition']['text'] ?? 'N/A'); ?></div>
-                        <div class="update-time">Updated as of <?php echo $updateTime; ?></div>
+                        <div class="update-time">Diperbarui pada <?php echo $updateTime; ?></div>
                     </div>
                     
                     <!-- 6 Detail Conditions in Horizontal Row -->
                     <div class="weather-details-row">
                         <div class="detail-box">
-                            <span class="detail-label">Feels Like</span>
+                            <span class="detail-label">Terasa Seperti</span>
                             <span class="detail-value"><?php echo round($weatherData['current']['feelslike_c'] ?? 0); ?>°</span>
                         </div>
                         <div class="detail-box">
-                            <span class="detail-label">Wind</span>
+                            <span class="detail-label">Angin</span>
                             <span class="detail-value"><?php 
                                 $windSpeed = round($weatherData['current']['wind_kph'] ?? 0);
-                                echo $windSpeed . ' km/h';
+                                echo $windSpeed . ' km/j';
                             ?></span>
                         </div>
                         <div class="detail-box">
-                            <span class="detail-label">Visibility</span>
+                            <span class="detail-label">Jarak Pandang</span>
                             <span class="detail-value"><?php echo round(($weatherData['current']['vis_km'] ?? 0)); ?> km</span>
                         </div>
                         <div class="detail-box">
-                            <span class="detail-label">Barometer</span>
+                            <span class="detail-label">Tekanan Udara</span>
                             <span class="detail-value"><?php echo number_format($weatherData['current']['pressure_mb'] ?? 0, 2); ?> mb</span>
                         </div>
                         <div class="detail-box">
-                            <span class="detail-label">Humidity</span>
+                            <span class="detail-label">Kelembaban</span>
                             <span class="detail-value"><?php echo round($weatherData['current']['humidity'] ?? 0); ?>%</span>
                         </div>
                         <div class="detail-box">
-                            <span class="detail-label">Dew Point</span>
+                            <span class="detail-label">Titik Embun</span>
                             <span class="detail-value"><?php echo round($weatherData['current']['dewpoint_c'] ?? 0); ?>°</span>
                         </div>
                     </div>
@@ -315,7 +315,7 @@ $weatherData = getWeatherData($searchQuery);
                 
                 <!-- Today's Details Section -->
                 <div class="today-details-section">
-                    <h2 class="section-title">Today's Details</h2>
+                    <h2 class="section-title">Detail Hari Ini</h2>
                     <div class="today-details-grid">
                         <div class="today-detail-card" data-detail-type="sunrise-sunset" style="cursor: pointer;">
                             <div class="detail-card-icon sunrise-icon">
@@ -324,14 +324,14 @@ $weatherData = getWeatherData($searchQuery);
                                     <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
                                 </svg>
                             </div>
-                            <div class="detail-card-title">Sunrise & Sunset</div>
+                            <div class="detail-card-title">Matahari Terbit & Terbenam</div>
                             <div class="detail-card-content">
                                 <div class="sunrise-sunset-item">
-                                    <span class="ss-label">Sunrise</span>
+                                    <span class="ss-label">Terbit</span>
                                     <span class="ss-value"><?php echo $sunrise; ?></span>
                                 </div>
                                 <div class="sunrise-sunset-item">
-                                    <span class="ss-label">Sunset</span>
+                                    <span class="ss-label">Terbenam</span>
                                     <span class="ss-value"><?php echo $sunset; ?></span>
                                 </div>
                             </div>
@@ -344,7 +344,7 @@ $weatherData = getWeatherData($searchQuery);
                                     <path d="M12 4v8M12 12l-4 4M12 12l4 4" stroke="white" stroke-width="2"></path>
                                 </svg>
                             </div>
-                            <div class="detail-card-title">UV Index</div>
+                            <div class="detail-card-title">Indeks UV</div>
                             <div class="detail-card-content">
                                 <div class="uv-value"><?php echo $uvIndex; ?></div>
                                 <div class="uv-level"><?php echo $uvLevel; ?></div>
@@ -361,7 +361,7 @@ $weatherData = getWeatherData($searchQuery);
                                     <circle cx="12" cy="12" r="3"></circle>
                                 </svg>
                             </div>
-                            <div class="detail-card-title">Visibility</div>
+                            <div class="detail-card-title">Jarak Pandang</div>
                             <div class="detail-card-content">
                                 <div class="visibility-value"><?php echo $visibility; ?> km</div>
                             </div>
@@ -373,7 +373,7 @@ $weatherData = getWeatherData($searchQuery);
                                     <path d="M18.5 10.5c0-2.5-2-4.5-4.5-4.5-1.2 0-2.3.5-3.1 1.3C9.8 6.1 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 .8.2 1.6.5 2.3C.6 13.7 0 14.9 0 16.2c0 2.1 1.7 3.8 3.8 3.8h13.4c2.1 0 3.8-1.7 3.8-3.8 0-1.3-.6-2.5-1.5-3.4.3-.7.5-1.5.5-2.3z" fill="lightblue"/>
                                 </svg>
                             </div>
-                            <div class="detail-card-title">Cloud Cover</div>
+                            <div class="detail-card-title">Tutupan Awan</div>
                             <div class="detail-card-content">
                                 <div class="cloud-value"><?php echo $cloudCover; ?>%</div>
                             </div>
@@ -383,7 +383,7 @@ $weatherData = getWeatherData($searchQuery);
                 
                 <!-- Middle Section: Daily Forecast -->
                 <div class="daily-section">
-                    <h2 class="section-title">Daily</h2>
+                    <h2 class="section-title">Harian</h2>
                     <div class="forecast-list-horizontal">
                         <?php if (isset($weatherData['forecast']['forecastday']) && is_array($weatherData['forecast']['forecastday'])): ?>
                             <?php foreach ($weatherData['forecast']['forecastday'] as $index => $day): 
@@ -420,26 +420,26 @@ $weatherData = getWeatherData($searchQuery);
                 <!-- Statistics Section -->
                 <div class="statistics-section">
                     <div class="stat-card">
-                        <div class="stat-label">Average High</div>
+                        <div class="stat-label">Rata-rata Tertinggi</div>
                         <div class="stat-value"><?php echo $avgMaxTemp; ?>°</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">Average Low</div>
+                        <div class="stat-label">Rata-rata Terendah</div>
                         <div class="stat-value"><?php echo $avgMinTemp; ?>°</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">Max Temp</div>
+                        <div class="stat-label">Suhu Maksimal</div>
                         <div class="stat-value"><?php echo $maxTemp; ?>°</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-label">Min Temp</div>
+                        <div class="stat-label">Suhu Minimal</div>
                         <div class="stat-value"><?php echo $minTemp; ?>°</div>
                     </div>
                 </div>
                 
                 <!-- Bottom Section: Hourly Forecast with Graph -->
                 <div class="hourly-section">
-                    <h2 class="section-title">Hourly</h2>
+                    <h2 class="section-title">Per Jam</h2>
                     <div class="hourly-container">
                         <div class="hourly-graph-wrapper">
                             <canvas id="hourlyChart" width="800" height="200"></canvas>
@@ -458,7 +458,7 @@ $weatherData = getWeatherData($searchQuery);
                         
                         <!-- Hourly Analytics Section -->
                         <div class="hourly-analytics">
-                            <h3 class="analytics-title">Hourly Analytics</h3>
+                            <h3 class="analytics-title">Analitik Per Jam</h3>
                             <div class="analytics-grid">
                                 <!-- Temperature Analytics -->
                                 <div class="analytics-card">
@@ -468,7 +468,7 @@ $weatherData = getWeatherData($searchQuery);
                                                 <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z"></path>
                                             </svg>
                                         </div>
-                                        <div class="analytics-label">Temperature</div>
+                                        <div class="analytics-label">Suhu</div>
                                     </div>
                                     <div class="analytics-stats" id="tempAnalytics">
                                         <!-- Will be populated by JavaScript -->
@@ -484,7 +484,7 @@ $weatherData = getWeatherData($searchQuery);
                                                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
                                             </svg>
                                         </div>
-                                        <div class="analytics-label">Humidity</div>
+                                        <div class="analytics-label">Kelembaban</div>
                                     </div>
                                     <div class="analytics-stats" id="humidityAnalytics">
                                         <!-- Will be populated by JavaScript -->
@@ -501,7 +501,7 @@ $weatherData = getWeatherData($searchQuery);
                                                 <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
                                             </svg>
                                         </div>
-                                        <div class="analytics-label">Rain</div>
+                                        <div class="analytics-label">Hujan</div>
                                     </div>
                                     <div class="analytics-stats" id="rainAnalytics">
                                         <!-- Will be populated by JavaScript -->
@@ -517,7 +517,7 @@ $weatherData = getWeatherData($searchQuery);
                                                 <path d="M18.5 10.5c0-2.5-2-4.5-4.5-4.5-1.2 0-2.3.5-3.1 1.3C9.8 6.1 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 .8.2 1.6.5 2.3C.6 13.7 0 14.9 0 16.2c0 2.1 1.7 3.8 3.8 3.8h13.4c2.1 0 3.8-1.7 3.8-3.8 0-1.3-.6-2.5-1.5-3.4.3-.7.5-1.5.5-2.3z" fill="lightblue"/>
                                             </svg>
                                         </div>
-                                        <div class="analytics-label">Cloud</div>
+                                        <div class="analytics-label">Awan</div>
                                     </div>
                                     <div class="analytics-stats" id="cloudAnalytics">
                                         <!-- Will be populated by JavaScript -->
@@ -536,7 +536,7 @@ $weatherData = getWeatherData($searchQuery);
                                     <line x1="16" y1="17" x2="8" y2="17"></line>
                                     <polyline points="10 9 9 9 8 9"></polyline>
                                 </svg>
-                                <span>Summary</span>
+                                <span>Ringkasan</span>
                             </button>
                             <button class="hourly-btn" id="detailsBtn">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -544,7 +544,7 @@ $weatherData = getWeatherData($searchQuery);
                                     <line x1="12" y1="16" x2="12" y2="12"></line>
                                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
                                 </svg>
-                                <span>Details</span>
+                                <span>Detail</span>
                             </button>
                         </div>
                     </div>

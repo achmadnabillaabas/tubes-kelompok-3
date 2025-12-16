@@ -1,4 +1,4 @@
-// script.js
+﻿// script.js
 
 let selectedDayIndex = 0; // Default to today (index 0)
 
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       },
       function (error) {
-        console.log("Geolocation error:", error);
+        console.log("Error geolokasi:", error);
         // Use default location (already set in PHP)
         // Hide loading screen
         const loadingScreen = document.getElementById("loadingScreen");
@@ -462,31 +462,31 @@ function showDayDetailModal(dayIndex) {
 
         <div class="modal-day-details">
             <div class="modal-detail-item">
-                <div class="modal-detail-label">Average Temperature</div>
+                <div class="modal-detail-label">Suhu Rata-rata</div>
                 <div class="modal-detail-value">${dayData.avgtemp_c}°C</div>
             </div>
             <div class="modal-detail-item">
-                <div class="modal-detail-label">Max Wind Speed</div>
+                <div class="modal-detail-label">Kecepatan Angin Maksimal</div>
                 <div class="modal-detail-value">${
                   dayData.maxwind_kph
                 } km/h</div>
             </div>
             <div class="modal-detail-item">
-                <div class="modal-detail-label">Total Precipitation</div>
+                <div class="modal-detail-label">Total Curah Hujan</div>
                 <div class="modal-detail-value">${
                   dayData.totalprecip_mm
                 } mm</div>
             </div>
             <div class="modal-detail-item">
-                <div class="modal-detail-label">Average Visibility</div>
+                <div class="modal-detail-label">Jarak Pandang Rata-rata</div>
                 <div class="modal-detail-value">${dayData.avgvis_km} km</div>
             </div>
             <div class="modal-detail-item">
-                <div class="modal-detail-label">Average Humidity</div>
+                <div class="modal-detail-label">Kelembaban Rata-rata</div>
                 <div class="modal-detail-value">${dayData.avghumidity}%</div>
             </div>
             <div class="modal-detail-item">
-                <div class="modal-detail-label">Chance of Rain</div>
+                <div class="modal-detail-label">Kemungkinan Hujan</div>
                 <div class="modal-detail-value">${
                   dayData.daily_chance_of_rain
                 }%</div>
@@ -495,7 +495,7 @@ function showDayDetailModal(dayIndex) {
               dayData.daily_chance_of_snow > 0
                 ? `
             <div class="modal-detail-item">
-                <div class="modal-detail-label">Chance of Snow</div>
+                <div class="modal-detail-label">Kemungkinan Salju</div>
                 <div class="modal-detail-value">${dayData.daily_chance_of_snow}%</div>
             </div>
             `
@@ -504,7 +504,7 @@ function showDayDetailModal(dayIndex) {
         </div>
 
         <div class="modal-hourly-section">
-            <div class="modal-hourly-title">Hourly Forecast</div>
+            <div class="modal-hourly-title">Prakiraan Per Jam</div>
             <div class="modal-hourly-list">
                 ${dayData.hourly
                   .slice(0, 24)
@@ -673,10 +673,10 @@ function showHourlySummary() {
 
   modalContent.innerHTML = `
         <div class="hourly-modal-header">
-            <div class="hourly-modal-title">Hourly Summary</div>
+            <div class="hourly-modal-title">Ringkasan Per Jam</div>
             <div style="color: #b0b0b0; font-size: 14px;">${
               dayData.dayName
-            }, ${new Date(dayData.date).toLocaleDateString("en-US", {
+            }, ${new Date(dayData.date).toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -685,33 +685,33 @@ function showHourlySummary() {
 
         <div class="hourly-summary-grid">
             <div class="hourly-summary-card">
-                <div class="hourly-summary-label">Average Temperature</div>
+                <div class="hourly-summary-label">Suhu Rata-rata</div>
                 <div class="hourly-summary-value">${avgTemp}°C</div>
             </div>
             <div class="hourly-summary-card">
-                <div class="hourly-summary-label">Max Temperature</div>
+                <div class="hourly-summary-label">Suhu Maksimal</div>
                 <div class="hourly-summary-value">${maxTemp}°C</div>
             </div>
             <div class="hourly-summary-card">
-                <div class="hourly-summary-label">Min Temperature</div>
+                <div class="hourly-summary-label">Suhu Minimal</div>
                 <div class="hourly-summary-value">${minTemp}°C</div>
             </div>
             <div class="hourly-summary-card">
-                <div class="hourly-summary-label">Average Humidity</div>
+                <div class="hourly-summary-label">Kelembaban Rata-rata</div>
                 <div class="hourly-summary-value">${avgHumidity}%</div>
             </div>
             <div class="hourly-summary-card">
-                <div class="hourly-summary-label">Average Wind Speed</div>
+                <div class="hourly-summary-label">Kecepatan Angin Rata-rata</div>
                 <div class="hourly-summary-value">${avgWind} km/h</div>
             </div>
             <div class="hourly-summary-card">
-                <div class="hourly-summary-label">Max Rain Chance</div>
+                <div class="hourly-summary-label">Kemungkinan Hujan Maksimal</div>
                 <div class="hourly-summary-value">${maxPrecip}%</div>
             </div>
         </div>
 
         <div class="modal-analytics-section">
-            <div class="modal-hourly-title">Hourly Analytics</div>
+            <div class="modal-hourly-title">Analitik Per Jam</div>
             <div class="modal-analytics-grid">
                 <div class="modal-analytics-card">
                     <div class="modal-analytics-header">
@@ -720,11 +720,11 @@ function showHourlySummary() {
                                 <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z"></path>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Temperature</div>
+                        <div class="modal-analytics-label">Suhu</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxTemp}°C</span>
                         </div>
                         <div class="modal-stat-item">
@@ -732,7 +732,7 @@ function showHourlySummary() {
                             <span class="modal-stat-value">${minTemp}°C</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgTemp}°C</span>
                         </div>
                     </div>
@@ -746,11 +746,11 @@ function showHourlySummary() {
                                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Humidity</div>
+                        <div class="modal-analytics-label">Kelembaban</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxHumidity}%</span>
                         </div>
                         <div class="modal-stat-item">
@@ -758,7 +758,7 @@ function showHourlySummary() {
                             <span class="modal-stat-value">${minHumidity}%</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgHumidity}%</span>
                         </div>
                     </div>
@@ -773,11 +773,11 @@ function showHourlySummary() {
                                 <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Rain</div>
+                        <div class="modal-analytics-label">Hujan</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxRain}%</span>
                         </div>
                         <div class="modal-stat-item">
@@ -785,7 +785,7 @@ function showHourlySummary() {
                             <span class="modal-stat-value">${minRain}%</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgRain}%</span>
                         </div>
                     </div>
@@ -799,11 +799,11 @@ function showHourlySummary() {
                                 <path d="M18.5 10.5c0-2.5-2-4.5-4.5-4.5-1.2 0-2.3.5-3.1 1.3C9.8 6.1 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 .8.2 1.6.5 2.3C.6 13.7 0 14.9 0 16.2c0 2.1 1.7 3.8 3.8 3.8h13.4c2.1 0 3.8-1.7 3.8-3.8 0-1.3-.6-2.5-1.5-3.4.3-.7.5-1.5.5-2.3z" fill="lightblue"/>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Cloud</div>
+                        <div class="modal-analytics-label">Awan</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxCloud}%</span>
                         </div>
                         <div class="modal-stat-item">
@@ -811,7 +811,7 @@ function showHourlySummary() {
                             <span class="modal-stat-value">${minCloud}%</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgCloud}%</span>
                         </div>
                     </div>
@@ -913,10 +913,10 @@ function showHourlyDetails() {
 
   modalContent.innerHTML = `
         <div class="hourly-modal-header">
-            <div class="hourly-modal-title">Hourly Details</div>
+            <div class="hourly-modal-title">Detail Per Jam</div>
             <div style="color: #b0b0b0; font-size: 14px;">${
               dayData.dayName
-            }, ${new Date(dayData.date).toLocaleDateString("en-US", {
+            }, ${new Date(dayData.date).toLocaleDateString("id-ID", {
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -924,7 +924,7 @@ function showHourlyDetails() {
         </div>
 
         <div class="modal-analytics-section">
-            <div class="modal-hourly-title">Hourly Analytics Summary</div>
+            <div class="modal-hourly-title">Ringkasan Analitik Per Jam</div>
             <div class="modal-analytics-grid">
                 <div class="modal-analytics-card">
                     <div class="modal-analytics-header">
@@ -933,11 +933,11 @@ function showHourlyDetails() {
                                 <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0z"></path>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Temperature</div>
+                        <div class="modal-analytics-label">Suhu</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxTemp}°C</span>
                         </div>
                         <div class="modal-stat-item">
@@ -945,7 +945,7 @@ function showHourlyDetails() {
                             <span class="modal-stat-value">${minTemp}°C</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgTemp}°C</span>
                         </div>
                     </div>
@@ -959,11 +959,11 @@ function showHourlyDetails() {
                                 <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Humidity</div>
+                        <div class="modal-analytics-label">Kelembaban</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxHumidity}%</span>
                         </div>
                         <div class="modal-stat-item">
@@ -971,7 +971,7 @@ function showHourlyDetails() {
                             <span class="modal-stat-value">${minHumidity}%</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgHumidity}%</span>
                         </div>
                     </div>
@@ -986,11 +986,11 @@ function showHourlyDetails() {
                                 <path d="M20 16.58A5 5 0 0 0 18 7h-1.26A8 8 0 1 0 4 15.25"></path>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Rain</div>
+                        <div class="modal-analytics-label">Hujan</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxRain}%</span>
                         </div>
                         <div class="modal-stat-item">
@@ -998,7 +998,7 @@ function showHourlyDetails() {
                             <span class="modal-stat-value">${minRain}%</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgRain}%</span>
                         </div>
                     </div>
@@ -1012,11 +1012,11 @@ function showHourlyDetails() {
                                 <path d="M18.5 10.5c0-2.5-2-4.5-4.5-4.5-1.2 0-2.3.5-3.1 1.3C9.8 6.1 8.2 5 6.5 5 3.5 5 1 7.5 1 10.5c0 .8.2 1.6.5 2.3C.6 13.7 0 14.9 0 16.2c0 2.1 1.7 3.8 3.8 3.8h13.4c2.1 0 3.8-1.7 3.8-3.8 0-1.3-.6-2.5-1.5-3.4.3-.7.5-1.5.5-2.3z" fill="lightblue"/>
                             </svg>
                         </div>
-                        <div class="modal-analytics-label">Cloud</div>
+                        <div class="modal-analytics-label">Awan</div>
                     </div>
                     <div class="modal-analytics-stats">
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Max</span>
+                            <span class="modal-stat-label">Maks</span>
                             <span class="modal-stat-value">${maxCloud}%</span>
                         </div>
                         <div class="modal-stat-item">
@@ -1024,7 +1024,7 @@ function showHourlyDetails() {
                             <span class="modal-stat-value">${minCloud}%</span>
                         </div>
                         <div class="modal-stat-item">
-                            <span class="modal-stat-label">Avg</span>
+                            <span class="modal-stat-label">Rata</span>
                             <span class="modal-stat-value">${avgCloud}%</span>
                         </div>
                     </div>
@@ -1036,15 +1036,15 @@ function showHourlyDetails() {
         <table class="hourly-details-table">
             <thead>
                 <tr>
-                    <th>Time</th>
-                    <th>Temp</th>
-                    <th>Feels Like</th>
-                    <th>Condition</th>
-                    <th>Humidity</th>
-                    <th>Wind</th>
-                    <th>Pressure</th>
-                    <th>Rain</th>
-                    <th>Cloud</th>
+                    <th>Waktu</th>
+                    <th>Suhu</th>
+                    <th>Terasa Seperti</th>
+                    <th>Kondisi</th>
+                    <th>Kelembaban</th>
+                    <th>Angin</th>
+                    <th>Tekanan</th>
+                    <th>Hujan</th>
+                    <th>Awan</th>
                 </tr>
             </thead>
             <tbody>
@@ -1145,34 +1145,34 @@ function showTodayDetailModal(detailType) {
 
       content = `
                 <div class="hourly-modal-header">
-                    <div class="hourly-modal-title">Sunrise & Sunset</div>
+                    <div class="hourly-modal-title">Matahari Terbit & Terbenam</div>
                     <div style="color: #b0b0b0; font-size: 14px;">${
-                      location?.name || "Current Location"
+                      location?.name || "Lokasi Saat Ini"
                     }</div>
                 </div>
 
                 <div class="modal-day-main" style="flex-direction: column; gap: 30px;">
                     <div style="display: flex; justify-content: space-around; gap: 30px; flex-wrap: wrap;">
                         <div class="modal-detail-item" style="min-width: 200px;">
-                            <div class="modal-detail-label">Sunrise</div>
+                            <div class="modal-detail-label">Matahari Terbit</div>
                             <div class="modal-detail-value" style="font-size: 36px;">${
                               details.sunrise
                             }</div>
-                            <div style="font-size: 12px; color: #b0b0b0; margin-top: 10px;">Morning golden hour</div>
+                            <div style="font-size: 12px; color: #b0b0b0; margin-top: 10px;">Jam emas pagi</div>
                         </div>
                         <div class="modal-detail-item" style="min-width: 200px;">
-                            <div class="modal-detail-label">Sunset</div>
+                            <div class="modal-detail-label">Matahari Terbenam</div>
                             <div class="modal-detail-value" style="font-size: 36px;">${
                               details.sunset
                             }</div>
-                            <div style="font-size: 12px; color: #b0b0b0; margin-top: 10px;">Evening golden hour</div>
+                            <div style="font-size: 12px; color: #b0b0b0; margin-top: 10px;">Jam emas sore</div>
                         </div>
                     </div>
                     
                     <div class="modal-detail-item">
-                        <div class="modal-detail-label">Day Length</div>
-                        <div class="modal-detail-value" style="font-size: 32px;">${dayLengthHours}h ${dayLengthMinutes}m</div>
-                        <div style="font-size: 12px; color: #b0b0b0; margin-top: 10px;">Total daylight hours</div>
+                        <div class="modal-detail-label">Durasi Siang</div>
+                        <div class="modal-detail-value" style="font-size: 32px;">${dayLengthHours}j ${dayLengthMinutes}m</div>
+                        <div style="font-size: 12px; color: #b0b0b0; margin-top: 10px;">Total jam siang hari</div>
                     </div>
                 </div>
             `;
@@ -1182,9 +1182,9 @@ function showTodayDetailModal(detailType) {
       const uvDescription = getUVDescription(details.uvIndex);
       content = `
                 <div class="hourly-modal-header">
-                    <div class="hourly-modal-title">UV Index</div>
+                    <div class="hourly-modal-title">Indeks UV</div>
                     <div style="color: #b0b0b0; font-size: 14px;">${
-                      location?.name || "Current Location"
+                      location?.name || "Lokasi Saat Ini"
                     }</div>
                 </div>
 
@@ -1206,19 +1206,19 @@ function showTodayDetailModal(detailType) {
 
                     <div class="modal-day-details">
                         <div class="modal-detail-item">
-                            <div class="modal-detail-label">Current Level</div>
+                            <div class="modal-detail-label">Level Saat Ini</div>
                             <div class="modal-detail-value">${
                               details.uvLevel
                             }</div>
                         </div>
                         <div class="modal-detail-item">
-                            <div class="modal-detail-label">Index Value</div>
+                            <div class="modal-detail-label">Nilai Indeks</div>
                             <div class="modal-detail-value">${
                               details.uvIndex
                             }</div>
                         </div>
                         <div class="modal-detail-item">
-                            <div class="modal-detail-label">Protection Needed</div>
+                            <div class="modal-detail-label">Perlindungan Diperlukan</div>
                             <div class="modal-detail-value">${getUVProtection(
                               details.uvIndex
                             )}</div>
@@ -1227,7 +1227,7 @@ function showTodayDetailModal(detailType) {
 
                     <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-top: 20px;">
                         <div style="font-size: 14px; color: #e0e0e0; line-height: 1.6;">
-                            <strong style="color: #ffffff;">Description:</strong><br>
+                            <strong style="color: #ffffff;">Deskripsi:</strong><br>
                             ${uvDescription}
                         </div>
                     </div>
@@ -1241,9 +1241,9 @@ function showTodayDetailModal(detailType) {
       );
       content = `
                 <div class="hourly-modal-header">
-                    <div class="hourly-modal-title">Visibility</div>
+                    <div class="hourly-modal-title">Jarak Pandang</div>
                     <div style="color: #b0b0b0; font-size: 14px;">${
-                      location?.name || "Current Location"
+                      location?.name || "Lokasi Saat Ini"
                     }</div>
                 </div>
 
@@ -1252,23 +1252,23 @@ function showTodayDetailModal(detailType) {
                         <div style="font-size: 72px; font-weight: 300; color: #ffffff; margin-bottom: 15px;">${
                           details.visibility
                         }</div>
-                        <div style="font-size: 18px; color: #b0b0b0; margin-bottom: 10px;">kilometers</div>
+                        <div style="font-size: 18px; color: #b0b0b0; margin-bottom: 10px;">kilometer</div>
                         <div style="font-size: 16px; color: #87cefa; font-weight: 600;">${visibilityDescription}</div>
                     </div>
 
                     <div class="modal-day-details">
                         <div class="modal-detail-item">
-                            <div class="modal-detail-label">Current Visibility</div>
+                            <div class="modal-detail-label">Jarak Pandang Saat Ini</div>
                             <div class="modal-detail-value">${
                               details.visibility
                             } km</div>
                         </div>
                         <div class="modal-detail-item">
-                            <div class="modal-detail-label">Condition</div>
+                            <div class="modal-detail-label">Kondisi</div>
                             <div class="modal-detail-value">${visibilityDescription}</div>
                         </div>
                         <div class="modal-detail-item">
-                            <div class="modal-detail-label">Air Quality Impact</div>
+                            <div class="modal-detail-label">Dampak Kualitas Udara</div>
                             <div class="modal-detail-value">${getVisibilityImpact(
                               details.visibility
                             )}</div>
@@ -1277,10 +1277,10 @@ function showTodayDetailModal(detailType) {
 
                     <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; margin-top: 20px;">
                         <div style="font-size: 14px; color: #e0e0e0; line-height: 1.6;">
-                            <strong style="color: #ffffff;">Visibility Scale:</strong><br>
-                            • Excellent: > 10 km<br>
-                            • Good: 5-10 km<br>
-                            • Moderate: 2-5 km<br>
+                            <strong style="color: #ffffff;">Skala Jarak Pandang:</strong><br>
+                            • Sangat Baik: > 10 km<br>
+                            • Baik: 5-10 km<br>
+                            • Sedang: 2-5 km<br>
                             • Poor: 1-2 km<br>
                             • Very Poor: < 1 km
                         </div>
@@ -1348,37 +1348,37 @@ function showTodayDetailModal(detailType) {
 
 function getUVDescription(uvIndex) {
   if (uvIndex >= 11)
-    return "Extreme UV radiation. Avoid sun exposure between 10am-4pm. Seek shade and wear protective clothing.";
+    return "Radiasi UV ekstrem. Hindari paparan matahari antara jam 10 pagi-4 sore. Cari tempat teduh dan kenakan pakaian pelindung.";
   if (uvIndex >= 8)
-    return "Very high UV radiation. Extra protection needed. Avoid sun between 10am-4pm.";
+    return "Radiasi UV sangat tinggi. Perlindungan ekstra diperlukan. Hindari matahari antara jam 10 pagi-4 sore.";
   if (uvIndex >= 6)
-    return "High UV radiation. Protection required. Seek shade during midday hours.";
+    return "Radiasi UV tinggi. Perlindungan diperlukan. Cari tempat teduh saat tengah hari.";
   if (uvIndex >= 3)
-    return "Moderate UV radiation. Some protection needed. Seek shade during midday if outside.";
-  return "Low UV radiation. Minimal protection needed. Safe to be outside.";
+    return "Radiasi UV sedang. Perlindungan diperlukan. Cari tempat teduh saat tengah hari jika di luar.";
+  return "Radiasi UV rendah. Perlindungan minimal diperlukan. Aman untuk berada di luar.";
 }
 
 function getUVProtection(uvIndex) {
-  if (uvIndex >= 11) return "Maximum";
-  if (uvIndex >= 8) return "Very High";
-  if (uvIndex >= 6) return "High";
-  if (uvIndex >= 3) return "Moderate";
+  if (uvIndex >= 11) return "Maksimal";
+  if (uvIndex >= 8) return "Sangat Tinggi";
+  if (uvIndex >= 6) return "Tinggi";
+  if (uvIndex >= 3) return "Sedang";
   return "Minimal";
 }
 
 function getVisibilityDescription(visibility) {
-  if (visibility > 10) return "Excellent";
-  if (visibility >= 5) return "Good";
-  if (visibility >= 2) return "Moderate";
-  if (visibility >= 1) return "Poor";
-  return "Very Poor";
+  if (visibility > 10) return "Sangat Baik";
+  if (visibility >= 5) return "Baik";
+  if (visibility >= 2) return "Sedang";
+  if (visibility >= 1) return "Buruk";
+  return "Sangat Buruk";
 }
 
 function getVisibilityImpact(visibility) {
-  if (visibility > 10) return "Clear";
+  if (visibility > 10) return "Jernih";
   if (visibility >= 5) return "Normal";
-  if (visibility >= 2) return "Reduced";
-  return "Limited";
+  if (visibility >= 2) return "Berkurang";
+  return "Terbatas";
 }
 
 function getCloudDescription(cloudCover) {
