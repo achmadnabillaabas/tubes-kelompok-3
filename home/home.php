@@ -1,5 +1,15 @@
 <?php
-$env = @parse_ini_file(__DIR__ . '/.env');
+$env = [];
+$possible = [
+    __DIR__ . '/../.env',
+    __DIR__ . '/.env'
+];
+foreach ($possible as $p) {
+    if (file_exists($p)) {
+        $env = @parse_ini_file($p) ?: [];
+        break;
+    }
+}
 $home_api = $env['home_api'] ?? '';
 ?>
 <!DOCTYPE html>
