@@ -453,7 +453,7 @@ if ($totalArticles === 0) {
     <!-- ARTICLES SECTION -->
     <section class="articles-section">
       <h2>Berita Terkini</h2>
-      
+
       <?php if (!empty($pageArticles)): ?>
         <div class="articles-grid">
           <?php
