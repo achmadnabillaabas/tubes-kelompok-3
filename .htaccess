@@ -1,0 +1,23 @@
+# Weather PHP Site - Root Configuration
+
+# Redirect root to current folder
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /tubes-kelompok-3/
+    
+    # Redirect root index to current folder
+    RewriteRule ^index\.php$ current/ [R=301,L]
+    RewriteRule ^index\.html$ current/ [R=301,L]
+    
+    # If accessing root without file, redirect to current
+    RewriteCond %{REQUEST_URI} ^/tubes-kelompok-3/?$
+    RewriteRule ^$ current/ [R=301,L]
+</IfModule>
+
+# Prevent directory listing
+Options -Indexes
+
+# Allow access
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>
