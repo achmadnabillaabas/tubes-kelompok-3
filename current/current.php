@@ -104,13 +104,13 @@ $weatherData = getWeatherData($searchQuery);
             transition: opacity 0.5s ease, visibility 0.5s ease;
             pointer-events: auto;
         }
-        
+
         .loading-screen.hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
-        
+
         .loading-spinner {
             width: 60px;
             height: 60px;
@@ -120,11 +120,11 @@ $weatherData = getWeatherData($searchQuery);
             animation: spin 1s linear infinite;
             margin-bottom: 20px;
         }
-        
+
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-        
+
         .loading-text {
             color: #ffffff;
             font-size: 18px;
@@ -144,7 +144,7 @@ $weatherData = getWeatherData($searchQuery);
         $locationTime = isset($weatherData['location']['localtime']) ? strtotime($weatherData['location']['localtime']) : time();
         $currentTime = date('H:i', $locationTime);
         $updateTime = isset($weatherData['current']['last_updated']) ? date('H:i', strtotime($weatherData['current']['last_updated'])) : $currentTime;
-        
+
         // Calculate statistics
         $allTemps = [];
         $allMaxTemps = [];
@@ -159,7 +159,7 @@ $weatherData = getWeatherData($searchQuery);
         $avgMinTemp = count($allMinTemps) > 0 ? round(array_sum($allMinTemps) / count($allMinTemps)) : 0;
         $maxTemp = count($allMaxTemps) > 0 ? max($allMaxTemps) : 0;
         $minTemp = count($allMinTemps) > 0 ? min($allMinTemps) : 0;
-        
+
         // Prepare all forecast days data for JavaScript
         $allForecastData = [];
         if (isset($weatherData['forecast']['forecastday'])) {
@@ -180,7 +180,7 @@ $weatherData = getWeatherData($searchQuery);
                         ];
                     }
                 }
-                
+
                 $allForecastData[] = [
                     'date' => $day['date'],
                     'dayName' => date('l', strtotime($day['date'])),
@@ -201,12 +201,12 @@ $weatherData = getWeatherData($searchQuery);
                 ];
             }
         }
-        
+
         // Get hourly data for current day starting from current time
         $currentHour = (int)date('H');
         $currentMinute = (int)date('i');
         $currentTimeStr = date('H:i');
-        
+
         $hourlyData = [];
         if (isset($allForecastData[0]['hourly'])) {
             // Filter hourly data starting from current time
@@ -217,18 +217,18 @@ $weatherData = getWeatherData($searchQuery);
                     $hourlyData[] = $hour;
                 }
             }
-            
+
             // If not enough hours for today, get from tomorrow
             if (count($hourlyData) < 24 && isset($allForecastData[1]['hourly'])) {
                 $remainingHours = 24 - count($hourlyData);
                 $tomorrowHours = array_slice($allForecastData[1]['hourly'], 0, $remainingHours);
                 $hourlyData = array_merge($hourlyData, $tomorrowHours);
             }
-            
+
             // Limit to 24 hours
             $hourlyData = array_slice($hourlyData, 0, 24);
         }
-        
+
         // Get today's details (sunrise, sunset, UV, visibility, cloud cover)
         $todayForecast = $weatherData['forecast']['forecastday'][0] ?? null;
         $sunrise = $todayForecast ? ($todayForecast['astro']['sunrise'] ?? '06:00') : '06:00';
@@ -236,7 +236,7 @@ $weatherData = getWeatherData($searchQuery);
         $uvIndex = round($weatherData['current']['uv'] ?? 0);
         $visibility = round($weatherData['current']['vis_km'] ?? 10);
         $cloudCover = $weatherData['current']['cloud'] ?? 0;
-        
+
         // UV Index level
         $uvLevel = 'Rendah';
         if ($uvIndex >= 11) $uvLevel = 'Ekstrem';
@@ -268,19 +268,19 @@ $weatherData = getWeatherData($searchQuery);
                         </button>
                     </form>
                 </div>
-                
+
                 <!-- Top Section: Current Weather -->
                 <div class="top-section">
                     <div class="location-header">
                         <h1 class="location-name"><?php echo htmlspecialchars($weatherData['location']['name'] ?? 'Unknown'); ?>, <?php echo htmlspecialchars($weatherData['location']['country'] ?? ''); ?></h1>
                     </div>
-                    
+
                     <div class="current-weather-main">
                         <div class="current-temp"><?php echo round($weatherData['current']['temp_c'] ?? 0); ?>°<span class="temp-unit">C</span></div>
                         <div class="current-condition"><?php echo htmlspecialchars($weatherData['current']['condition']['text'] ?? 'N/A'); ?></div>
                         <div class="update-time">Diperbarui pada <?php echo $updateTime; ?></div>
                     </div>
-                    
+
                     <!-- 6 Detail Conditions in Horizontal Row -->
                     <div class="weather-details-row">
                         <div class="detail-box">
@@ -312,7 +312,7 @@ $weatherData = getWeatherData($searchQuery);
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Today's Details Section -->
                 <div class="today-details-section">
                     <h2 class="section-title">Detail Hari Ini</h2>
@@ -336,7 +336,7 @@ $weatherData = getWeatherData($searchQuery);
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="today-detail-card" data-detail-type="uv-index" style="cursor: pointer;">
                             <div class="detail-card-icon uv-icon">
                                 <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
@@ -353,7 +353,7 @@ $weatherData = getWeatherData($searchQuery);
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="today-detail-card" data-detail-type="visibility" style="cursor: pointer;">
                             <div class="detail-card-icon visibility-icon">
                                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -366,7 +366,7 @@ $weatherData = getWeatherData($searchQuery);
                                 <div class="visibility-value"><?php echo $visibility; ?> km</div>
                             </div>
                         </div>
-                        
+
                         <div class="today-detail-card" data-detail-type="cloud-cover" style="cursor: pointer;">
                             <div class="detail-card-icon cloud-icon">
                                 <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
@@ -380,7 +380,7 @@ $weatherData = getWeatherData($searchQuery);
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Middle Section: Daily Forecast -->
                 <div class="daily-section">
                     <h2 class="section-title">Harian</h2>
@@ -416,7 +416,7 @@ $weatherData = getWeatherData($searchQuery);
                         <?php endif; ?>
                     </div>
                 </div>
-                
+
                 <!-- Statistics Section -->
                 <div class="statistics-section">
                     <div class="stat-card">
@@ -436,7 +436,7 @@ $weatherData = getWeatherData($searchQuery);
                         <div class="stat-value"><?php echo $minTemp; ?>°</div>
                     </div>
                 </div>
-                
+
                 <!-- Bottom Section: Hourly Forecast with Graph -->
                 <div class="hourly-section">
                     <h2 class="section-title">Per Jam</h2>
@@ -455,7 +455,7 @@ $weatherData = getWeatherData($searchQuery);
                                 <?php endforeach; ?>
                             </div>
                         </div>
-                        
+
                         <!-- Hourly Analytics Section -->
                         <div class="hourly-analytics">
                             <h3 class="analytics-title">Analitik Per Jam</h3>
@@ -526,7 +526,7 @@ $weatherData = getWeatherData($searchQuery);
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="hourly-buttons">
                             <button class="hourly-btn" id="summaryBtn">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -551,7 +551,7 @@ $weatherData = getWeatherData($searchQuery);
                 </div>
             </div>
         </div>
-        
+
         <!-- Daily Forecast Detail Modal -->
         <div id="dayDetailModal" class="modal">
             <div class="modal-content">
@@ -561,7 +561,7 @@ $weatherData = getWeatherData($searchQuery);
                 </div>
             </div>
         </div>
-        
+
         <!-- Hourly Summary Modal -->
         <div id="hourlySummaryModal" class="modal">
             <div class="modal-content">
@@ -571,7 +571,7 @@ $weatherData = getWeatherData($searchQuery);
                 </div>
             </div>
         </div>
-        
+
         <!-- Hourly Details Modal -->
         <div id="hourlyDetailsModal" class="modal">
             <div class="modal-content">
@@ -581,7 +581,7 @@ $weatherData = getWeatherData($searchQuery);
                 </div>
             </div>
         </div>
-        
+
         <!-- Today's Details Modal -->
         <div id="todayDetailsModal" class="modal">
             <div class="modal-content">
@@ -591,7 +591,7 @@ $weatherData = getWeatherData($searchQuery);
                 </div>
             </div>
         </div>
-        
+
         <!-- Pass data to JavaScript -->
         <script>
             window.weatherData = <?php echo json_encode([
@@ -609,10 +609,10 @@ $weatherData = getWeatherData($searchQuery);
                     'cloudCover' => $cloudCover
                 ]
             ]); ?>;
-            
+
             // Store search query for reference
             window.currentSearchQuery = <?php echo json_encode($searchQuery); ?>;
-            
+
             // Log for debugging - all data is from searched city
             console.log('Weather data loaded for:', window.weatherData.location?.name || 'Unknown');
         </script>
