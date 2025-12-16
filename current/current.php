@@ -386,7 +386,7 @@ $weatherData = getWeatherData($searchQuery);
                     <h2 class="section-title">Harian</h2>
                     <div class="forecast-list-horizontal">
                         <?php if (isset($weatherData['forecast']['forecastday']) && is_array($weatherData['forecast']['forecastday'])): ?>
-                            <?php foreach ($weatherData['forecast']['forecastday'] as $index => $day): 
+                            <?php foreach ($weatherData['forecast']['forecastday'] as $index => $day):
                                 $dayName = date('D', strtotime($day['date']));
                                 $dayDate = date('j', strtotime($day['date']));
                                 $isToday = $index === 0;
