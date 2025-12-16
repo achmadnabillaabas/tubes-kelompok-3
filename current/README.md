@@ -141,7 +141,7 @@ Untuk dokumentasi lengkap, lihat folder `docs/`:
 
 ---
 
-## ✅ Checklist
+## ✅ Che![alt text](image.png)cklist
 
 - [x] XAMPP Apache running
 - [x] Folder di path yang benar

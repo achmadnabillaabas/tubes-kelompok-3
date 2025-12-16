@@ -17,29 +17,29 @@ async function fetchWeatherData(query) {
     
     // Check if response is ok
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error(`Error HTTP! status: ${response.status}`);
     }
     
     // Get response text first to check if it's valid JSON
     const text = await response.text();
-    console.log('Response text:', text.substring(0, 200)); // Log first 200 chars
+    console.log('Teks respons:', text.substring(0, 200)); // Log first 200 chars
     
     let result;
     try {
       result = JSON.parse(text);
     } catch (e) {
-      console.error('Failed to parse JSON:', e);
-      console.error('Response was:', text);
-      throw new Error('Invalid response from server. Please check console for details.');
+      console.error('Gagal parsing JSON:', e);
+      console.error('Respons adalah:', text);
+      throw new Error('Respons tidak valid dari server. Silakan cek console untuk detail.');
     }
     
     if (!result.success) {
-      throw new Error(result.error || 'Failed to load weather data');
+      throw new Error(result.error || 'Gagal memuat data cuaca');
     }
     
     return result.data;
   } catch (error) {
-    console.error('Weather fetch error:', error);
+    console.error('Error mengambil data cuaca:', error);
     showErrorNotification(error.message);
     throw error;
   } finally {
@@ -87,7 +87,7 @@ function updatePageWithWeatherData(weatherData) {
     updateHourlyAnalytics(hourlyData);
   }
   
-  console.log('✅ Page updated with new weather data');
+  console.log('✅ Halaman diperbarui dengan data cuaca baru');
 }
 
 /**
@@ -120,11 +120,11 @@ function updateCurrentWeather(data) {
   }
   
   if (updateTime) {
-    const time = new Date(data.current.last_updated).toLocaleTimeString('en-US', {
+    const time = new Date(data.current.last_updated).toLocaleTimeString('id-ID', {
       hour: '2-digit',
       minute: '2-digit'
     });
-    updateTime.textContent = `Updated as of ${time}`;
+    updateTime.textContent = `Diperbarui pada ${time}`;
   }
 }
 
@@ -174,7 +174,7 @@ function updateTodayDetails(data) {
     uvValue.textContent = uv;
     
     if (uvLevel) {
-      uvLevel.textContent = uv >= 11 ? 'Extreme' : uv >= 8 ? 'Very High' : uv >= 6 ? 'High' : uv >= 3 ? 'Moderate' : 'Low';
+      uvLevel.textContent = uv >= 11 ? 'Ekstrem' : uv >= 8 ? 'Sangat Tinggi' : uv >= 6 ? 'Tinggi' : uv >= 3 ? 'Sedang' : 'Rendah';
     }
     
     if (uvProgressBar) {
@@ -207,7 +207,7 @@ function updateDailyForecast(data) {
   forecastList.innerHTML = '';
   
   data.forecast.forecastday.forEach((day, index) => {
-    const dayName = new Date(day.date).toLocaleDateString('en-US', { weekday: 'short' });
+    const dayName = new Date(day.date).toLocaleDateString('id-ID', { weekday: 'short' });
     const dayDate = new Date(day.date).getDate();
     const isToday = index === 0;
     
@@ -392,7 +392,7 @@ function handleSearchSubmit(event) {
   const city = searchInput ? searchInput.value.trim() : '';
   
   if (!city) {
-    showErrorNotification('Please enter a city name');
+    showErrorNotification('Silakan masukkan nama kota');
     return;
   }
   
@@ -412,7 +412,7 @@ async function loadWeatherForCity(city) {
     window.history.pushState({ city }, '', newUrl);
     
   } catch (error) {
-    console.error('Failed to load weather:', error);
+    console.error('Gagal memuat cuaca:', error);
   }
 }
 
@@ -429,7 +429,7 @@ async function loadWeatherForCoordinates(lat, lon) {
     window.history.pushState({ lat, lon }, '', newUrl);
     
   } catch (error) {
-    console.error('Failed to load weather:', error);
+    console.error('Gagal memuat cuaca:', error);
   }
 }
 
@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', function() {
       
       if (navigator.geolocation) {
         this.disabled = true;
-        this.innerHTML = '<span>Searching...</span>';
+        this.innerHTML = '<span>Mencari...</span>';
         
         navigator.geolocation.getCurrentPosition(
           (position) => {
@@ -459,7 +459,7 @@ document.addEventListener('DOMContentLoaded', function() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
               </svg>
-              <span>My Location</span>
+              <span>Lokasi Saya</span>
             `;
           },
           (error) => {
@@ -468,13 +468,13 @@ document.addEventListener('DOMContentLoaded', function() {
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"></path>
               </svg>
-              <span>My Location</span>
+              <span>Lokasi Saya</span>
             `;
-            showErrorNotification('Unable to access your location. Please enable location permission.');
+            showErrorNotification('Tidak dapat mengakses lokasi Anda. Silakan aktifkan izin lokasi.');
           }
         );
       } else {
-        showErrorNotification('Your browser does not support geolocation.');
+        showErrorNotification('Browser Anda tidak mendukung geolokasi.');
       }
     });
   }

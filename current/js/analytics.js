@@ -6,11 +6,11 @@
  */
 function updateHourlyAnalytics(hourlyData) {
   if (!hourlyData || hourlyData.length === 0) {
-    console.warn('No hourly data available for analytics');
+    console.warn('Tidak ada data per jam tersedia untuk analitik');
     return;
   }
 
-  console.log('Updating hourly analytics with', hourlyData.length, 'hours of data');
+  console.log('Memperbarui analitik per jam dengan', hourlyData.length, 'jam data');
 
   // Extract data arrays
   const temps = hourlyData.map(h => h.temp);
@@ -20,16 +20,16 @@ function updateHourlyAnalytics(hourlyData) {
   const times = hourlyData.map(h => h.time);
 
   // Update each analytics card
-  updateAnalyticsCard('tempAnalytics', 'tempChart', temps, times, '°C', '#ff6b6b', 'Temperature');
-  updateAnalyticsCard('humidityAnalytics', 'humidityChart', humidities, times, '%', '#4a9eff', 'Humidity');
-  updateAnalyticsCard('rainAnalytics', 'rainChart', rains, times, '%', '#74b9ff', 'Rain Chance');
+  updateAnalyticsCard('tempAnalytics', 'tempChart', temps, times, '°C', '#ff6b6b', 'Suhu');
+  updateAnalyticsCard('humidityAnalytics', 'humidityChart', humidities, times, '%', '#4a9eff', 'Kelembaban');
+  updateAnalyticsCard('rainAnalytics', 'rainChart', rains, times, '%', '#74b9ff', 'Kemungkinan Hujan');
   
   // For cloud data, we need to extract it differently
   const clouds = hourlyData.map(h => {
     // Some APIs might not have cloud data in hourly
     return h.cloud || 0;
   });
-  updateAnalyticsCard('cloudAnalytics', 'cloudChart', clouds, times, '%', '#b0c4de', 'Cloud Cover');
+  updateAnalyticsCard('cloudAnalytics', 'cloudChart', clouds, times, '%', '#b0c4de', 'Tutupan Awan');
 
   // Generate and display weather insights
   const insights = generateWeatherInsights(hourlyData);
@@ -47,23 +47,23 @@ function updateAnalyticsCard(statsId, chartId, values, times, unit, color, label
   const statsContainer = document.getElementById(statsId);
   if (statsContainer) {
     statsContainer.innerHTML = `
-      <div class="stat-item" title="Highest ${label.toLowerCase()} at ${stats.maxTime}">
-        <span class="stat-label">Max</span>
+      <div class="stat-item" title="Tertinggi ${label.toLowerCase()} pada ${stats.maxTime}">
+        <span class="stat-label">Maks</span>
         <span class="stat-value">${stats.max}${unit}</span>
         <span class="stat-time">${stats.maxTime}</span>
       </div>
-      <div class="stat-item" title="Lowest ${label.toLowerCase()} at ${stats.minTime}">
+      <div class="stat-item" title="Terendah ${label.toLowerCase()} pada ${stats.minTime}">
         <span class="stat-label">Min</span>
         <span class="stat-value">${stats.min}${unit}</span>
         <span class="stat-time">${stats.minTime}</span>
       </div>
-      <div class="stat-item" title="Average ${label.toLowerCase()} - ${stats.trendText}">
-        <span class="stat-label">Avg</span>
+      <div class="stat-item" title="Rata-rata ${label.toLowerCase()} - ${stats.trendText}">
+        <span class="stat-label">Rata</span>
         <span class="stat-value">${stats.avg}${unit}</span>
         <span class="stat-time">${stats.trendIcon} ${stats.trendText}</span>
       </div>
-      <div class="stat-item" title="Variability: ${stats.variability}">
-        <span class="stat-label">Range</span>
+      <div class="stat-item" title="Variabilitas: ${stats.variability}">
+        <span class="stat-label">Rentang</span>
         <span class="stat-value">${stats.range}${unit}</span>
         <span class="stat-time">${stats.variability}</span>
       </div>
@@ -100,21 +100,21 @@ function calculateStatistics(values, times) {
   let trendIcon, trendText;
   if (trendDiff > range * 0.1) {
     trendIcon = '↑';
-    trendText = 'Rising';
+    trendText = 'Naik';
   } else if (trendDiff < -range * 0.1) {
     trendIcon = '↓';
-    trendText = 'Falling';
+    trendText = 'Turun';
   } else {
     trendIcon = '→';
-    trendText = 'Stable';
+    trendText = 'Stabil';
   }
 
   // Calculate variability (standard deviation)
   const variance = values.reduce((sum, val) => sum + Math.pow(val - avg, 2), 0) / values.length;
   const stdDev = Math.sqrt(variance);
-  const variability = stdDev > range * 0.3 ? 'High' : 
-                      stdDev > range * 0.15 ? 'Moderate' : 
-                      'Low';
+  const variability = stdDev > range * 0.3 ? 'Tinggi' : 
+                      stdDev > range * 0.15 ? 'Sedang' : 
+                      'Rendah';
 
   return {
     max: Math.round(max),
@@ -268,7 +268,7 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'warning',
       icon: '🌡️',
-      message: `Large temperature variation (${Math.round(tempRange)}°C). Dress in layers.`
+      message: `Variasi suhu besar (${Math.round(tempRange)}°C). Kenakan pakaian berlapis.`
     });
   }
   
@@ -276,13 +276,13 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'alert',
       icon: '🔥',
-      message: `Very hot weather (${Math.round(maxTemp)}°C). Stay hydrated and avoid direct sunlight.`
+      message: `Cuaca sangat panas (${Math.round(maxTemp)}°C). Tetap terhidrasi dan hindari sinar matahari langsung.`
     });
   } else if (maxTemp > 30) {
     insights.push({
       type: 'warning',
       icon: '☀️',
-      message: `Hot weather (${Math.round(maxTemp)}°C). Use sunscreen and drink plenty of water.`
+      message: `Cuaca panas (${Math.round(maxTemp)}°C). Gunakan tabir surya dan minum banyak air.`
     });
   }
   
@@ -290,7 +290,7 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'info',
       icon: '🧥',
-      message: `Cool temperatures at night (${Math.round(minTemp)}°C). Bring a jacket or sweater.`
+      message: `Suhu dingin di malam hari (${Math.round(minTemp)}°C). Bawa jaket atau sweater.`
     });
   }
   
@@ -299,7 +299,7 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'warning',
       icon: '☔',
-      message: `High chance of rain (${Math.round(maxRain)}%). Don't forget your umbrella!`
+      message: `Kemungkinan hujan tinggi (${Math.round(maxRain)}%). Jangan lupa payung Anda!`
     });
   }
   
@@ -307,13 +307,13 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'alert',
       icon: '🌧️',
-      message: `Extended rain period (${rainyHours} hours). Plan indoor activities.`
+      message: `Periode hujan panjang (${rainyHours} jam). Rencanakan aktivitas dalam ruangan.`
     });
   } else if (avgRain > 30) {
     insights.push({
       type: 'info',
       icon: '🌦️',
-      message: `Possible rain throughout the day. Prepare rain gear.`
+      message: `Kemungkinan hujan sepanjang hari. Siapkan perlengkapan hujan.`
     });
   }
   
@@ -322,7 +322,7 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'info',
       icon: '💧',
-      message: `High humidity (${Math.round(avgHumidity)}%). It may feel warmer than actual temperature.`
+      message: `Kelembaban tinggi (${Math.round(avgHumidity)}%). Mungkin terasa lebih panas dari suhu sebenarnya.`
     });
   }
   
@@ -331,13 +331,13 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'warning',
       icon: '💨',
-      message: `Strong winds (${Math.round(maxWind)} km/h). Secure loose objects.`
+      message: `Angin kencang (${Math.round(maxWind)} km/h). Amankan benda-benda yang mudah terbang.`
     });
   } else if (maxWind > 25) {
     insights.push({
       type: 'info',
       icon: '🍃',
-      message: `Moderate winds (${Math.round(maxWind)} km/h). Be careful when driving.`
+      message: `Angin sedang (${Math.round(maxWind)} km/h). Hati-hati saat berkendara.`
     });
   }
   
@@ -346,7 +346,7 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'success',
       icon: '✨',
-      message: 'Perfect weather for outdoor activities! Enjoy your day.'
+      message: 'Cuaca sempurna untuk aktivitas luar ruangan! Nikmati hari Anda.'
     });
   }
   
@@ -356,25 +356,25 @@ function generateWeatherInsights(hourlyData) {
     insights.push({
       type: 'info',
       icon: '😊',
-      message: 'Comfort Level: Very Comfortable'
+      message: 'Tingkat Kenyamanan: Sangat Nyaman'
     });
   } else if (comfortIndex < 60) {
     insights.push({
       type: 'info',
       icon: '🙂',
-      message: 'Comfort Level: Comfortable'
+      message: 'Tingkat Kenyamanan: Nyaman'
     });
   } else if (comfortIndex < 80) {
     insights.push({
       type: 'warning',
       icon: '😓',
-      message: 'Comfort Level: Slightly Uncomfortable'
+      message: 'Tingkat Kenyamanan: Sedikit Tidak Nyaman'
     });
   } else {
     insights.push({
       type: 'alert',
       icon: '🥵',
-      message: 'Comfort Level: Uncomfortable - Limit outdoor activities'
+      message: 'Tingkat Kenyamanan: Tidak Nyaman - Batasi aktivitas luar ruangan'
     });
   }
   
@@ -407,7 +407,7 @@ function displayWeatherInsights(insights) {
   if (!insightsContainer || insights.length === 0) return;
   
   insightsContainer.innerHTML = `
-    <h4 class="insights-title">💡 Weather Insights & Recommendations</h4>
+    <h4 class="insights-title">💡 Wawasan Cuaca & Rekomendasi</h4>
     <div class="insights-grid">
       ${insights.map((insight, index) => `
         <div class="insight-card insight-${insight.type}" style="animation-delay: ${0.1 * (index + 1)}s">
