@@ -1,8 +1,8 @@
 <?php
 $env = [];
 $possible = [
-    __DIR__ . '/../.env',
-    __DIR__ . '/.env'
+    __DIR__ . '/../2.env',
+    __DIR__ . '/2.env'
 ];
 foreach ($possible as $p) {
     if (file_exists($p)) {
@@ -245,7 +245,7 @@ $home_api = $env['home_api'] ?? '';
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Inject API key from server (.env) into client JS -->
+    <!-- Inject API key from server (2.env) into client JS -->
     <script>
     window.HOME_API_KEY = '<?php echo addslashes($home_api); ?>';
     </script>
