@@ -1,3 +1,17 @@
+<?php
+$env = [];
+$possible = [
+    __DIR__ . '/../.env',
+    __DIR__ . '/.env'
+];
+foreach ($possible as $p) {
+    if (file_exists($p)) {
+        $env = @parse_ini_file($p) ?: [];
+        break;
+    }
+}
+$home_api = $env['home_api'] ?? '';
+?>
 <!DOCTYPE html>
 <html lang="id">
 
@@ -231,6 +245,10 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Inject API key from server (.env) into client JS -->
+    <script>
+    window.HOME_API_KEY = '<?php echo addslashes($home_api); ?>';
+    </script>
     <!-- Custom JS -->
     <script src="js/weather.js"></script>
 </body>
