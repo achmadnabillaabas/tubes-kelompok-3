@@ -42,20 +42,20 @@ function getWeatherData($query) {
             'verify_peer_name' => false
         ]
     ]);
-    
+
     $response = @file_get_contents($url, false, $context);
-    
+
     if ($response === false) {
         return null;
     }
-    
+
     $data = json_decode($response, true);
-    
+
     // Check if API returned an error
     if (isset($data['error'])) {
         return null;
     }
-    
+
     return $data;
 }
 
