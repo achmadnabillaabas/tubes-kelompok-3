@@ -99,7 +99,7 @@ function filterByKeywords($articles, $keywords, $limit = PHP_INT_MAX) {
 
     foreach ($articles as $article) {
         if (count($matching) >= $limit) break;
-        
+      
         $text = strtolower(
             ($article['title'] ?? '') . ' ' .
             ($article['description'] ?? '') . ' ' .
