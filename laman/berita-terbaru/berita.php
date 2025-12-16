@@ -123,14 +123,14 @@ function filterByKeywords($articles, $keywords, $limit = PHP_INT_MAX) {
     $matching = [];
 
     foreach ($articles as $article) {
-      if (count($matching) >= $limit) break;
+        if (count($matching) >= $limit) break;
 
         $text = strtolower(
             ($article['title'] ?? '') . ' ' .
             ($article['description'] ?? '') . ' ' .
             ($article['content'] ?? '')
         );
-        
+
         foreach ($keywords as $keyword) {
             if (stripos($text, $keyword) !== false) {
                 $matching[] = $article;
@@ -188,11 +188,11 @@ function fetchRelevantArticles(
             . '&apiKey=' . urlencode($apiKey);
 
         $result = fetchFromApiRaw($url);
-        
+
         if (!$result['ok']) {
             $kompasError = true;
             $kompasResult = $result;
-            
+
             // Detect plan restrictions (HTTP 426 or domain-related error)
             if ($result['http'] === 426 || 
                 stripos($result['error'], 'domain') !== false ||
@@ -282,7 +282,7 @@ function fetchRelevantArticles(
     $finalPool = [];
     foreach ($articlePool as $article) {
         if (count($finalPool) >= $maxPool) break;
-        
+
         $url = $article['url'] ?? null;
         if ($url && !isset($seenUrls[$url])) {
             $seenUrls[$url] = true;
@@ -442,7 +442,7 @@ if ($totalArticles === 0) {
     <!-- PAGE INFO -->
     <?php if ($totalArticles > 0): ?>
       <div class="page-info">
-        📄 Halaman <strong><?= $currentPage ?></strong> dari <strong><?= $totalPages ?></strong> 
+        📄 Halaman <strong><?= $currentPage ?></strong> dari <strong><?= $totalPages ?></strong>
         &nbsp; | &nbsp; Menampilkan <strong><?= count($pageArticles) ?></strong> dari <strong><?= $totalArticles ?></strong> artikel
       </div>
     <?php endif; ?>
@@ -465,7 +465,7 @@ if ($totalArticles === 0) {
             $source_name = $a['source']['name'] ?? 'Tidak diketahui';
             $published = $a['publishedAt'] ?? 'now';
             $date_formatted = date('d M Y', strtotime($published));
-            
+
             // Determine if article is from Kompas
             $isKompas = stripos($urlA, 'kompas.com') !== false;
           ?>
@@ -492,7 +492,7 @@ if ($totalArticles === 0) {
               <p class="card-desc">
                 <?= htmlspecialchars(substr($desc, 0, 130) . (strlen($desc) > 130 ? '...' : '')) ?>
               </p>
-              
+
               <div class="card-meta">
                 <span class="card-source"><?= htmlspecialchars(substr($source_name, 0, 22)) ?></span>
                 <span class="card-date"><?= htmlspecialchars($date_formatted) ?></span>
