@@ -2,7 +2,7 @@
 // =====================================================================
 // index.php - Berita Cuaca Kekinian (Multi-Source Pool + Server-Side Pagination)
 // =====================================================================
-// Purpose: 
+// Purpose:
 //   - Aggressively fetch articles into a large pool (Kompas → global fallback)
 //   - Cache the FULL pool (not sliced to page size)
 //   - Paginate ONLY at render time
