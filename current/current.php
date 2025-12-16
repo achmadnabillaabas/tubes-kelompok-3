@@ -139,7 +139,7 @@ $weatherData = getWeatherData($searchQuery);
         <div class="loading-spinner"></div>
         <div class="loading-text">Memuat data cuaca...</div>
     </div>
-    <?php if ($weatherData && isset($weatherData['location'])): 
+    <?php if ($weatherData && isset($weatherData['location'])):
         // Use location's local time for accurate time display
         $locationTime = isset($weatherData['location']['localtime']) ? strtotime($weatherData['location']['localtime']) : time();
         $currentTime = date('H:i', $locationTime);
