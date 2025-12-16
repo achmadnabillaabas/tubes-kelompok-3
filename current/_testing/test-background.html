@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Dynamic Background</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #1a1f2e;
+            color: white;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 15px;
+        }
+        h1 {
+            color: #4a9eff;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background: #4a9eff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background: #3a8eef;
+        }
+        .result {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            font-family: monospace;
+        }
+        .preview {
+            width: 100%;
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            margin-top: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: background-image 1s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🌤️ Dynamic Background Test</h1>
+        
+        <div class="test-section">
+            <h3>Test Weather Conditions</h3>
+            <p>Click buttons to test different weather conditions:</p>
+            
+            <button onclick="testSunny()">☀️ Sunny</button>
+            <button onclick="testCloudy()">☁️ Cloudy</button>
+            <button onclick="testRainy()">🌧️ Rainy</button>
+            <button onclick="testPartlyCloudy()">⛅ Partly Cloudy</button>
+            <button onclick="testOvercast()">🌥️ Overcast</button>
+            
+            <div class="result" id="result"></div>
+            <div class="preview" id="preview"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Test Cloud Cover Threshold</h3>
+            <p>Test with different cloud cover percentages:</p>
+            
+            <button onclick="testCloudCover(10)">10% Cloud</button>
+            <button onclick="testCloudCover(30)">30% Cloud</button>
+            <button onclick="testCloudCover(40)">40% Cloud</button>
+            <button onclick="testCloudCover(60)">60% Cloud</button>
+            <button onclick="testCloudCover(80)">80% Cloud</button>
+            
+            <div class="result" id="cloudResult"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>Current Implementation Status</h3>
+            <ul>
+                <li>✅ weather-background.js created</li>
+                <li>✅ Integration with script.js</li>
+                <li>✅ CSS transitions added</li>
+                <li>✅ bg.jpg (cloudy) exists</li>
+                <li>✅ bg2.jpg (sunny) exists</li>
+            </ul>
+        </div>
+    </div>
+
+    <script src="../js/weather-background.js"></script>
+    <script>
+        function testSunny() {
+            const testData = {
+                current: {
+                    condition: { text: "Sunny" },
+                    cloud: 10,
+                    is_day: 1
+                }
+            };
+            runTest(testData, "Sunny Weather");
+        }
+
+        function testCloudy() {
+            const testData = {
+                current: {
+                    condition: { text: "Cloudy" },
+                    cloud: 80,
+                    is_day: 1
+                }
+            };
+            runTest(testData, "Cloudy Weather");
+        }
+
+        function testRainy() {
+            const testData = {
+                current: {
+                    condition: { text: "Moderate rain" },
+                    cloud: 90,
+                    is_day: 1
+                }
+            };
+            runTest(testData, "Rainy Weather");
+        }
+
+        function testPartlyCloudy() {
+            const testData = {
+                current: {
+                    condition: { text: "Partly cloudy" },
+                    cloud: 30,
+                    is_day: 1
+                }
+            };
+            runTest(testData, "Partly Cloudy Weather");
+        }
+
+        function testOvercast() {
+            const testData = {
+                current: {
+                    condition: { text: "Overcast" },
+                    cloud: 100,
+                    is_day: 1
+                }
+            };
+            runTest(testData, "Overcast Weather");
+        }
+
+        function testCloudCover(percentage) {
+            const testData = {
+                current: {
+                    condition: { text: "Partly cloudy" },
+                    cloud: percentage,
+                    is_day: 1
+                }
+            };
+            
+            const bg = getWeatherBackground(testData);
+            const category = getWeatherCategory(testData);
+            
+            document.getElementById('cloudResult').innerHTML = `
+                <strong>Cloud Cover: ${percentage}%</strong><br>
+                Background: ${bg}<br>
+                Category: ${category.icon} ${category.description}<br>
+                Expected: ${percentage < 40 ? 'bg2.jpg (Sunny)' : 'bg.jpg (Cloudy)'}
+            `;
+        }
+
+        function runTest(weatherData, testName) {
+            const bg = getWeatherBackground(weatherData);
+            const category = getWeatherCategory(weatherData);
+            
+            document.getElementById('result').innerHTML = `
+                <strong>Test: ${testName}</strong><br>
+                Condition: ${weatherData.current.condition.text}<br>
+                Cloud Cover: ${weatherData.current.cloud}%<br>
+                Selected Background: <strong>${bg}</strong><br>
+                Category: ${category.icon} ${category.description}<br>
+                Expected Background: ${category.background}
+            `;
+            
+            // Update preview
+            const preview = document.getElementById('preview');
+            preview.style.backgroundImage = `url('assets/${bg}')`;
+        }
+
+        // Initial test
+        window.onload = function() {
+            testSunny();
+        };
+    </script>
+</body>
+</html>
