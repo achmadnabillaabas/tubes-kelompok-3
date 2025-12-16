@@ -194,7 +194,7 @@ function fetchRelevantArticles(
             $kompasResult = $result;
 
             // Detect plan restrictions (HTTP 426 or domain-related error)
-            if ($result['http'] === 426 || 
+            if ($result['http'] === 426 ||
                 stripos($result['error'], 'domain') !== false ||
                 stripos($result['error'], 'param') !== false) {
                 $kompasBlockedByPlan = true;
