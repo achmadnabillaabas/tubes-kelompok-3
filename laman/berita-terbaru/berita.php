@@ -14,13 +14,38 @@
 // Use environment variable NEWSAPI_KEY in production (hosting control panel).
 
 // API Key (prefer environment variable for production)
-$apiKey = getenv('NEWSAPI_KEY');
+// Try common environment variable names first.
+$apiKey = getenv('NEWSAPI_KEY') ?: getenv('news_api_key');
+
+// If not available in environment, try loading project .env (simple parser).
 if (!$apiKey) {
-    // Fallback to literal key (DEVELOPMENT ONLY - remove before commit!)
-    $apiKey = 'a5cc5cdfc7fb41ac91f432303bc26607';
+  $envPath = dirname(__DIR__, 1) . DIRECTORY_SEPARATOR . '.env';
+  // __DIR__ is laman/berita-terbaru, so dirname(__DIR__,1) is laman — .env is in project root, go one more up
+  $possible = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . '.env';
+  if (file_exists($possible)) {
+    $envPath = $possible;
+  }
+
+  if (file_exists($envPath) && is_readable($envPath)) {
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+      $line = trim($line);
+      if ($line === '' || $line[0] === '#') continue;
+      if (strpos($line, '=') === false) continue;
+      list($k, $v) = explode('=', $line, 2);
+      $k = trim($k);
+      $v = trim($v);
+      $v = trim($v, "'\"");
+      if (strcasecmp($k, 'NEWSAPI_KEY') === 0 || strcasecmp($k, 'news_api_key') === 0) {
+        $apiKey = $v;
+        break;
+      }
+    }
+  }
 }
+
 if (!$apiKey) {
-    die("❌ API key tidak ditemukan. Set NEWSAPI_KEY environment variable atau edit file ini.");
+  die("❌ API key tidak ditemukan. Set environment variable NEWSAPI_KEY atau tambahkan .env dengan entry news_api_key=YOUR_KEY.");
 }
 
 // Cache configuration
@@ -98,8 +123,8 @@ function filterByKeywords($articles, $keywords, $limit = PHP_INT_MAX) {
     $matching = [];
 
     foreach ($articles as $article) {
-        if (count($matching) >= $limit) break;
-      
+      if (count($matching) >= $limit) break;
+
         $text = strtolower(
             ($article['title'] ?? '') . ' ' .
             ($article['description'] ?? '') . ' ' .
@@ -431,7 +456,7 @@ if ($totalArticles === 0) {
       
       <?php if (!empty($pageArticles)): ?>
         <div class="articles-grid">
-          <?php 
+          <?php
           foreach ($pageArticles as $a):
             $title = $a['title'] ?? 'Tanpa judul';
             $desc  = $a['description'] ?? '';
@@ -538,7 +563,7 @@ if ($totalArticles === 0) {
       <div class="sidebar-widget">
         <h3 class="widget-title">Trending</h3>
         <ul class="trending-list">
-          <?php 
+          <?php
           $trendingCount = 0;
           foreach ($articles as $a):
             if ($trendingCount >= 5) break;
@@ -553,9 +578,9 @@ if ($totalArticles === 0) {
               </a>
             </div>
           </li>
-          <?php 
+          <?php
           $trendingCount++;
-          endforeach; 
+          endforeach;
           ?>
         </ul>
       </div>
