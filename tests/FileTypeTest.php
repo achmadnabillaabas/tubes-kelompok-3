@@ -5,6 +5,7 @@ class FileTypeTest extends TestCase
 {
     private $projectFiles = [
         'laman/berita-terbaru/berita.php',
+        'current/current.php',
     ];
 
     /**

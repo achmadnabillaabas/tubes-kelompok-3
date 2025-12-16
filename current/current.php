@@ -1,9 +1,34 @@
 <?php
 // index.php
 
+// Load API key from env file (1.env)
+function loadEnvFile($path) {
+    $env = [];
+    if (!file_exists($path)) return $env;
+    $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        if ($line === '' || strpos($line, '#') === 0) continue;
+        if (strpos($line, '=') === false) continue;
+        list($k, $v) = explode('=', $line, 2);
+        $k = trim($k);
+        $v = trim($v);
+        // remove surrounding quotes and whitespace
+        $v = trim($v, " \t\n\r\0\x0B'\"");
+        $env[$k] = $v;
+    }
+    return $env;
+}
+
+$env = loadEnvFile(__DIR__ . '/../1.env');
+$apiKey = isset($env['current_api']) ? $env['current_api'] : '';
+
 // Fetch weather data from WeatherAPI
 function getWeatherData($query) {
-    $apiKey = 'c24a6aed8c14428ab28115923250612'; // Replace with your WeatherAPI key
+    global $apiKey;
+    if (empty($apiKey)) {
+        return null; // missing API key
+    }
     $url = "https://api.weatherapi.com/v1/forecast.json?key={$apiKey}&q=" . urlencode($query) . "&days=10&aqi=no&alerts=no";
 
     // Use context to handle SSL
