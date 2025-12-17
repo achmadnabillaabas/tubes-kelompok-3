@@ -41,21 +41,11 @@ $home_api = $env['home_api'] ?? '';
                 </div>
             </label>
         </div>
-
         <div class="container">
             <h1><span class="emoji-3d">⛅</span> Selamat Datang di WeatherApp</h1>
             <p>Cek kondisi cuaca dan prakiraan 5 hari ke depan untuk kota mana pun!</p>
-            <div>
-                <a href="current.php" class="btn btn-custom">
-                    <span class="emoji-3d">🔍</span> Lihat Cuaca Sekarang
-                </a>
-                <a href="forecast.php" class="btn btn-custom">
-                    <span class="emoji-3d">📅</span> Prakiraan 5 Hari
-                </a>
-            </div>
         </div>
     </div>
-
     <div class="container">
         <!-- Search Section -->
         <div class="search-section">
