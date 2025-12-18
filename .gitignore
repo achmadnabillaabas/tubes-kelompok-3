@@ -1,4 +1,5 @@
 /vendor
+laman-forecast
 
 # Environment variables (contains sensitive data)
 3.env
@@ -6,3 +7,9 @@ forecast/3.env
 
 # Config files with API keys
 forecast/config.php.backup
+laman-current
+.env
+1.env
+2.env
+main
+main
