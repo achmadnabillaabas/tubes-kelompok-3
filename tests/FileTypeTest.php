@@ -7,6 +7,7 @@ class FileTypeTest extends TestCase
         'home/home.php',
         'laman/berita-terbaru/berita.php',
         'current/current.php',
+        'forecast/index.php'
     ];
 
     /**

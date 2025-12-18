@@ -47,51 +47,14 @@ const WeatherMap = {
                 this.marker.bindPopup('Lokasi Anda').openPopup();
             }
 
-            // Setup layer controls
-            this.setupLayerControls();
+            // Map initialized successfully
+            console.log('Map initialized for location display');
         } catch (error) {
             console.error('Error initializing map:', error);
         }
     },
 
-    /**
-     * Setup layer controls (placeholder for weather layers)
-     */
-    setupLayerControls() {
-        const layerRain = document.getElementById('layerRain');
-        const layerClouds = document.getElementById('layerClouds');
-        const layerTemp = document.getElementById('layerTemp');
 
-        // Note: Weather layers require OpenWeatherMap API subscription
-        // These are placeholders for demonstration
-        
-        layerRain.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                console.log('Rain layer enabled (requires API subscription)');
-                // Example: Add rain layer
-                // const rainLayer = L.tileLayer(`https://tile.openweathermap.org/map/precipitation_new/{z}/{x}/{y}.png?appid=${CONFIG.apiKey}`);
-                // rainLayer.addTo(this.map);
-            } else {
-                console.log('Rain layer disabled');
-            }
-        });
-
-        layerClouds.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                console.log('Clouds layer enabled (requires API subscription)');
-            } else {
-                console.log('Clouds layer disabled');
-            }
-        });
-
-        layerTemp.addEventListener('change', (e) => {
-            if (e.target.checked) {
-                console.log('Temperature layer enabled (requires API subscription)');
-            } else {
-                console.log('Temperature layer disabled');
-            }
-        });
-    },
 
     /**
      * Center map to current location
