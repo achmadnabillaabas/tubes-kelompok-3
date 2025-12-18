@@ -17,6 +17,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/professional-design.css">
 </head>
 <body>
     <!-- HEADER / NAVBAR -->
@@ -27,24 +28,19 @@
                 <p class="navbar-subtitle">Sistem Perkiraan Cuaca Real-Time</p>
             </div>
             
-            <nav class="navbar-menu">
-                <a href="#hero" class="nav-link active">Beranda</a>
-                <a href="#hourly" class="nav-link">Per Jam</a>
-                <a href="#daily" class="nav-link">10 Hari</a>
-                <a href="#map" class="nav-link">Peta & Radar</a>
-                <a href="#analytics" class="nav-link">Analitik</a>
-                <a href="#tips" class="nav-link">Tips & Info</a>
-                <a href="#about" class="nav-link">Tentang Sistem</a>
-            </nav>
-            
-            <div class="navbar-controls">
-                <div class="search-box">
-                    <input type="text" id="searchInput" placeholder="Cari lokasi...">
-                    <button id="searchBtn" class="btn-search">Cari</button>
+            <div class="navbar-controls-center">
+                <div class="search-container">
+                    <input type="text" id="citySearchInput" class="search-input" placeholder="🔍 Cari kota...">
+                    <div id="searchResults" class="search-results"></div>
                 </div>
-                <button id="useLocationBtn" class="btn-location">📍 Gunakan Lokasi Saya</button>
-                <div class="unit-toggle">
-                    <button id="unitToggle" class="btn-unit">°C</button>
+                <div class="mobile-button-container">
+                    <button id="useLocationBtn" class="btn-location">📍 Gunakan Lokasi Saya</button>
+                    <div class="unit-toggle">
+                        <button id="unitToggle" class="btn-unit">°C</button>
+                    </div>
+                    <div class="theme-toggle">
+                        <button id="themeToggle" class="btn-theme" title="Toggle Dark Mode">🌙</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -52,8 +48,11 @@
 
     <!-- SECTION 1: HERO - CUACA SAAT INI -->
     <section id="hero" class="hero-section">
-        <div class="hero-background" id="heroBackground"></div>
-        <div class="hero-overlay"></div>
+        <!-- Professional decorative elements -->
+        <div class="floating-decoration decoration-1"></div>
+        <div class="floating-decoration decoration-2"></div>
+        <div class="floating-decoration decoration-3"></div>
+        
         <div class="hero-content">
             <div class="location-info">
                 <h2 id="locationName">Memuat lokasi...</h2>
@@ -195,16 +194,12 @@
         </div>
     </section>
 
-    <!-- SECTION 5: PETA & RADAR -->
+    <!-- SECTION 5: PETA LOKASI -->
     <section id="map" class="section map-section">
         <div class="container">
-            <h2 class="section-title">Peta & Radar</h2>
+            <h2 class="section-title">Peta Lokasi</h2>
             <div class="map-container">
                 <div class="map-controls">
-                    <h3>Layer Peta</h3>
-                    <label><input type="checkbox" id="layerRain"> Radar Hujan</label>
-                    <label><input type="checkbox" id="layerClouds"> Awan</label>
-                    <label><input type="checkbox" id="layerTemp"> Suhu</label>
                     <button id="centerMapBtn" class="btn-center-map">📍 Pusat ke Lokasi Saya</button>
                 </div>
                 <div id="weatherMap" class="weather-map"></div>
@@ -226,12 +221,7 @@
                     <canvas id="humidityTrendChart"></canvas>
                 </div>
             </div>
-            <div class="insights-box" id="insightsBox">
-                <h3>💡 Insight Otomatis</h3>
-                <div id="insightsContent">
-                    <p>Memuat analisis...</p>
-                </div>
-            </div>
+
         </div>
     </section>
 
@@ -295,13 +285,7 @@
                     <p><strong>Backend:</strong> PHP (untuk konfigurasi)</p>
                     <p><strong>Libraries:</strong> Chart.js, Leaflet.js</p>
                 </div>
-                
-                <div class="about-box developer-info">
-                    <h3>Informasi Pengembang</h3>
-                    <p><strong>Nama:</strong> [Nama Anda]</p>
-                    <p><strong>Judul Tugas Akhir:</strong> Sistem Perkiraan Cuaca Berbasis Web</p>
-                    <p><strong>Institusi:</strong> [Nama Institusi]</p>
-                </div>
+
             </div>
         </div>
     </section>
@@ -313,6 +297,41 @@
             <p>Data cuaca disediakan oleh <a href="https://openweathermap.org/" target="_blank">OpenWeatherMap</a></p>
         </div>
     </footer>
+
+    <!-- Daily Detail Modal -->
+    <div id="dailyDetailModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Detail Prediksi Hari Ini</h2>
+                <button id="closeModal" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="daily-summary">
+                    <div class="summary-info">
+                        <div class="summary-temp">
+                            <span id="modalMaxTemp">36°</span>
+                            <span class="temp-separator">/</span>
+                            <span id="modalMinTemp">21°</span>
+                        </div>
+                        <div class="summary-condition">
+                            <img id="modalIcon" src="" alt="Weather Icon">
+                            <span id="modalCondition">Hujan Petir</span>
+                        </div>
+                        <div class="summary-rain">
+                            <span class="rain-icon">💧</span>
+                            <span id="modalRainProb">75%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hourly-detail-container">
+                    <h3>Prediksi Per Jam (24 Jam)</h3>
+                    <div class="hourly-detail-grid" id="hourlyDetailGrid">
+                        <!-- Hourly cards will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
@@ -348,7 +367,20 @@
         };
         
         console.log('CONFIG loaded:', CONFIG);
+        
+        // Validasi API key
+        if (!CONFIG.apiKey || CONFIG.apiKey === 'DEMO_MODE' || CONFIG.apiKey.length < 10) {
+            console.warn('⚠️ API key tidak valid atau dalam mode demo!');
+            console.warn('API key saat ini:', CONFIG.apiKey ? CONFIG.apiKey.substring(0, 10) + '...' : 'KOSONG');
+        } else {
+            console.log('✅ API key terdeteksi:', CONFIG.apiKey.substring(0, 10) + '...');
+        }
+        
+
+
+
     </script>
+    <script src="js/darkmode.js"></script>
     <script src="js/api.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/charts.js"></script>
@@ -356,3 +388,4 @@
     <script src="js/main.js"></script>
 </body>
 </html>
+

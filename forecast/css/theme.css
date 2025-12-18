@@ -5,7 +5,7 @@
 
 :root {
     /* Color Palette */
-    --color-base: #BDD8F1;        /* Background lembut, card terang */
+    --color-base: #E3F2FD;        /* Background lembut, card terang biru */
     --color-secondary: #82A6CB;   /* Aksen, hover, border lembut */
     --color-primary: #3667A6;     /* Tombol utama, judul, link */
     --color-dark: #214177;        /* Navbar, footer, teks kontras */
@@ -19,7 +19,7 @@
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
     --gradient-dark: linear-gradient(135deg, var(--color-dark) 0%, var(--color-primary) 100%);
-    --gradient-overlay: linear-gradient(180deg, rgba(33, 65, 119, 0.7) 0%, rgba(54, 103, 166, 0.5) 100%);
+    --gradient-overlay: transparent;
     
     /* Shadows */
     --shadow-sm: 0 2px 4px rgba(33, 65, 119, 0.1);
@@ -69,16 +69,38 @@
     --z-tooltip: 1070;
 }
 
-/* Dark Mode Variables (Optional - untuk pengembangan lebih lanjut) */
+/* Dark Mode Variables - Cool Color Scheme */
 [data-theme="dark"] {
-    --color-base: #1a2332;
-    --color-secondary: #2d3e50;
-    --color-primary: #5a9fd4;
-    --color-dark: #0f1419;
-    --color-white: #1a2332;
-    --color-light: #2d3e50;
-    --color-text: #e4e6eb;
-    --color-text-light: #b0b3b8;
+    /* Dark Color Palette - Deep Ocean Theme */
+    --color-base: #0f172a;           /* Deep slate background */
+    --color-secondary: #06b6d4;      /* Cyan accent */
+    --color-primary: #3b82f6;        /* Bright blue */
+    --color-dark: #020617;           /* Very deep navy */
+    
+    /* Extended Dark Colors */
+    --color-white: #ffffff;          /* Pure white for contrast */
+    --color-light: #1e293b;          /* Slate card background */
+    --color-text: #f1f5f9;           /* Almost white text */
+    --color-text-light: #94a3b8;     /* Slate gray muted text */
+    
+    /* Dark Gradients - Ocean & Sky Theme */
+    --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #06b6d4 50%, #8b5cf6 100%);
+    --gradient-dark: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e293b 100%);
+    --gradient-overlay: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(6, 182, 212, 0.1) 100%);
+    
+    /* Dark Shadows with Color */
+    --shadow-sm: 0 2px 4px rgba(59, 130, 246, 0.1);
+    --shadow-md: 0 4px 8px rgba(59, 130, 246, 0.15);
+    --shadow-lg: 0 8px 16px rgba(59, 130, 246, 0.2);
+    --shadow-xl: 0 12px 24px rgba(59, 130, 246, 0.25);
+    
+    /* Additional Dark Mode Colors */
+    --color-accent: #f59e0b;         /* Amber accent */
+    --color-success: #10b981;        /* Emerald success */
+    --color-warning: #f59e0b;        /* Amber warning */
+    --color-error: #ef4444;          /* Red error */
+    --color-purple: #8b5cf6;         /* Purple accent */
+    --color-teal: #14b8a6;           /* Teal accent */
 }
 
 /* UV Level Colors */
