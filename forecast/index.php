@@ -278,7 +278,7 @@
                         <li>Animasi smooth dan responsif untuk semua perangkat</li>
                     </ul>
                 </div>
-                
+
                 <div class="about-box">
                     <h3>Arsitektur</h3>
                     <p><strong>Frontend:</strong> HTML5, CSS3, JavaScript (Vanilla)</p>
