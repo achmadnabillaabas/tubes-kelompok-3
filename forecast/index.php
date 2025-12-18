@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forecast+ — Sistem Perkiraan Cuaca</title>
-    
+    <title>Forecast+ — Sistem Perki`raan Cuaca</title>
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/style.css">
@@ -27,7 +27,7 @@
                 <h1>Forecast+</h1>
                 <p class="navbar-subtitle">Sistem Perkiraan Cuaca Real-Time</p>
             </div>
-            
+
             <div class="navbar-controls-center">
                 <div class="search-container">
                     <input type="text" id="citySearchInput" class="search-input" placeholder="🔍 Cari kota...">
@@ -52,13 +52,13 @@
         <div class="floating-decoration decoration-1"></div>
         <div class="floating-decoration decoration-2"></div>
         <div class="floating-decoration decoration-3"></div>
-        
+
         <div class="hero-content">
             <div class="location-info">
                 <h2 id="locationName">Memuat lokasi...</h2>
                 <p id="lastUpdated">Diperbarui: --:--</p>
             </div>
-            
+
             <div class="current-weather">
                 <div class="temp-main">
                     <span id="currentTemp" class="temperature">--</span>
@@ -68,13 +68,13 @@
                     <img id="weatherIcon" src="" alt="Weather Icon">
                 </div>
             </div>
-            
+
             <div class="weather-description">
                 <p id="weatherDesc" class="desc-main">--</p>
                 <p id="feelsLike" class="feels-like">Terasa seperti --°C</p>
                 <p id="weatherSummary" class="summary">Memuat data cuaca...</p>
             </div>
-            
+
             <div class="mini-stats">
                 <div class="stat-card">
                     <div class="stat-icon">💧</div>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="detail-card">
                     <div class="card-icon">☀️</div>
                     <h3>Indeks UV</h3>
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="detail-card">
                     <div class="card-icon">👁️</div>
                     <h3>Jarak Pandang</h3>
@@ -147,7 +147,7 @@
                         <span id="visibility" class="visibility-value">-- km</span>
                     </div>
                 </div>
-                
+
                 <div class="detail-card">
                     <div class="card-icon">☁️</div>
                     <h3>Tutupan Awan</h3>
@@ -169,7 +169,7 @@
                     <button id="viewChart" class="view-btn">Grafik</button>
                 </div>
             </div>
-            
+
             <div id="hourlyCards" class="hourly-cards-container">
                 <button class="slider-arrow left" id="hourlyPrev">‹</button>
                 <div class="hourly-cards" id="hourlyCardsWrapper">
@@ -177,7 +177,7 @@
                 </div>
                 <button class="slider-arrow right" id="hourlyNext">›</button>
             </div>
-            
+
             <div id="hourlyChart" class="hourly-chart-container" style="display: none;">
                 <canvas id="hourlyChartCanvas"></canvas>
             </div>
@@ -268,7 +268,7 @@
                         <li>Daily Forecast: Prakiraan harian hingga 7-10 hari</li>
                     </ul>
                 </div>
-                
+
                 <div class="about-box">
                     <h3>Fitur Unggulan</h3>
                     <ul>
@@ -348,10 +348,10 @@
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-    
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
+
     <!-- Custom JS -->
     <script>
         // Pass PHP config to JavaScript
@@ -365,9 +365,8 @@
             units: '<?php echo UNITS; ?>',
             lang: '<?php echo LANG; ?>'
         };
-        
+
         console.log('CONFIG loaded:', CONFIG);
-        
         // Validasi API key
         if (!CONFIG.apiKey || CONFIG.apiKey === 'DEMO_MODE' || CONFIG.apiKey.length < 10) {
             console.warn('⚠️ API key tidak valid atau dalam mode demo!');
@@ -375,7 +374,7 @@
         } else {
             console.log('✅ API key terdeteksi:', CONFIG.apiKey.substring(0, 10) + '...');
         }
-        
+
 
 
 
@@ -388,4 +387,3 @@
     <script src="js/main.js"></script>
 </body>
 </html>
-
