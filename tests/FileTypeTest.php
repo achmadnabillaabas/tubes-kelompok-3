@@ -3,9 +3,9 @@ use PHPUnit\Framework\TestCase;
 
 class FileTypeTest extends TestCase
 {
-    private $projectFiles = [
+    private $projectFiles = array(
         'forecast/index.php'
-    ];
+    );
 
     public function test_files_exist()
     {
