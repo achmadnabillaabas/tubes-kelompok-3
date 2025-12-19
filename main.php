@@ -210,7 +210,7 @@ function navActive($key, $current) {
 JS;
 
       // Don't use base tag as it interferes with navigation links
-      
+
       // Fix any relative navigation links in the included page to use main.php
       $pageHtml = preg_replace_callback(
         '/href\s*=\s*("|\')(\?page=[^"\']*)\1/i',
@@ -231,13 +231,13 @@ JS;
           if (strpos($path, 'http') === 0 || strpos($path, '/') === 0) {
             return $m[0];
           }
-          
+
           // Handle relative paths like "../assets/bg.jpg"
           if (strpos($path, '../') === 0) {
             // Remove ../ and use assetBase directly
             $path = substr($path, 3);
           }
-          
+
           return 'url("' . $assetBase . $path . '")';
         },
         $pageHtml
