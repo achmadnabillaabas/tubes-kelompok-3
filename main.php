@@ -272,14 +272,14 @@ JS;
       if (strpos($includePath, 'laman/current/current.php') !== false) {
         $bgPath = $assetBase . 'assets/bg.jpg';
         $cssOverride = '<style>
-          :root { --bg-image: url("' . $bgPath . '"); } 
-          .weather-app { 
-            background-image: var(--bg-image) !important; 
+          :root { --bg-image: url("' . $bgPath . '"); }
+          .weather-app {
+            background-image: var(--bg-image) !important;
             min-height: 100vh !important;
             margin: 0 !important;
             padding: 20px !important;
             padding-top: 100px !important;
-          } 
+          }
           .modal { background-image: var(--bg-image) !important; }
           .universal-header {
             background: rgba(26, 31, 46, 0.8) !important;
