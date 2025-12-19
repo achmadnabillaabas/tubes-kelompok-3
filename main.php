@@ -209,8 +209,6 @@ function navActive($key, $current) {
   }catch(e){console.warn('main.php guard init failed', e);} })();</script>
 JS;
 
-      // Don't use base tag as it interferes with navigation links
-
       // Fix any relative navigation links in the included page to use main.php
       $pageHtml = preg_replace_callback(
         '/href\s*=\s*("|\')(\?page=[^"\']*)\1/i',
