@@ -22,7 +22,7 @@ php_value error_reporting E_ALL
 # Rewrite rules
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /tubes-kelompok-3/current/
+    RewriteBase /tubes-kelompok-3/laman/current/
     
     # Allow existing files and directories
     RewriteCond %{REQUEST_FILENAME} -f [OR]

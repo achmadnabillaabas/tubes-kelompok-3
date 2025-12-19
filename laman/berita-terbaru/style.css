@@ -25,6 +25,144 @@ body {
   line-height: 1.6;
   font-weight: 400;
   font-size: 16px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* -------- DARK MODE STYLES -------- */
+body.dark-mode {
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+body.dark-mode .site-header {
+  background: #1e293b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  margin-top: 60px; /* Konsisten dengan light mode */
+}
+
+body.dark-mode .news-card,
+body.dark-mode .sidebar-widget,
+body.dark-mode .hero-section {
+  background: #1e293b;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode .news-card:hover,
+body.dark-mode .sidebar-widget:hover {
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-mode .card-title,
+body.dark-mode .hero-title,
+body.dark-mode .articles-section h2,
+body.dark-mode .widget-title {
+  color: #f1f5f9;
+}
+
+body.dark-mode .card-desc,
+body.dark-mode .hero-desc {
+  color: #94a3b8;
+}
+
+body.dark-mode .card-meta,
+body.dark-mode .hero-meta {
+  color: #64748b;
+  border-top-color: #334155;
+}
+
+body.dark-mode .card-source {
+  background: #334155;
+  color: #94a3b8;
+}
+
+body.dark-mode .trending-text a {
+  color: #f1f5f9;
+}
+
+body.dark-mode .trending-text a:hover {
+  color: #3667A6;
+}
+
+body.dark-mode .page-info {
+  background: #334155;
+  color: #e2e8f0;
+  border-left-color: #3667A6;
+}
+
+body.dark-mode .page-link {
+  background: #334155;
+  color: #e2e8f0;
+  border-color: #475569;
+}
+
+body.dark-mode .page-link:hover:not(.page-link-disabled):not(.page-link-active) {
+  background: #475569;
+  border-color: #3667A6;
+  color: #f1f5f9;
+}
+
+body.dark-mode .page-link-disabled {
+  background: #1e293b;
+  color: #64748b;
+  border-color: #334155;
+}
+
+body.dark-mode .alert.info {
+  background: #1e3a8a;
+  color: #bfdbfe;
+  border-color: #3b82f6;
+}
+
+body.dark-mode .alert.warning {
+  background: #92400e;
+  color: #fde68a;
+  border-color: #f59e0b;
+}
+
+body.dark-mode .site-footer {
+  background: #0f172a;
+  border-top: 1px solid #334155;
+}
+
+body.dark-mode .category-tag {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+body.dark-mode .category-tag:hover {
+  background: #3667A6;
+  color: white;
+}
+
+body.dark-mode .trending-number {
+  background: #3667A6;
+}
+
+body.dark-mode .hero-info {
+  background: #1e293b;
+}
+
+body.dark-mode .hero-category {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+body.dark-mode .card-image {
+  background: linear-gradient(135deg, #334155, #1e293b);
+}
+
+body.dark-mode .hero-image {
+  background: linear-gradient(135deg, #334155, #1e293b);
+}
+
+/* Dark mode untuk gambar placeholder */
+body.dark-mode .card-image div[style*="background: linear-gradient"] {
+  background: linear-gradient(135deg, #334155, #1e293b) !important;
+}
+
+/* Smooth transitions untuk semua elemen */
+body.dark-mode * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 a {
@@ -46,6 +184,7 @@ a:hover {
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(33, 65, 119, 0.15);
+  margin-top: 60px; /* Offset untuk header main.php */
 }
 
 .header-container {
@@ -102,6 +241,44 @@ a:hover {
 
 .nav-menu a:hover::after {
   width: 100%;
+}
+
+/* -------- DARK MODE TOGGLE BUTTON -------- */
+.dark-mode-toggle {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.dark-mode-toggle:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.1);
+}
+
+.dark-mode-toggle .toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.dark-mode-toggle:hover .toggle-icon {
+  transform: rotate(15deg);
+}
+
+body.dark-mode .dark-mode-toggle {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .dark-mode-toggle:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .search-bar {
@@ -715,6 +892,10 @@ a:hover {
 
 /* -------- RESPONSIVE DESIGN -------- */
 @media (max-width: 768px) {
+  .site-header {
+    margin-top: 50px; /* Sedikit lebih kecil di mobile */
+  }
+  
   .header-container {
     flex-direction: column;
     align-items: stretch;
@@ -791,6 +972,7 @@ a:hover {
 
   .site-header {
     padding: 0.75rem 0;
+    margin-top: 45px; /* Lebih kecil lagi di mobile kecil */
   }
 
   .logo {
@@ -839,4 +1021,109 @@ a:hover {
     padding: 10px 20px;
     font-size: 0.85rem;
   }
+}
+/* -------- ADDITIONAL DARK MODE IMPROVEMENTS -------- */
+
+/* Dark mode untuk link */
+body.dark-mode a {
+  color: #60a5fa;
+}
+
+body.dark-mode a:hover {
+  color: #93c5fd;
+}
+
+/* Dark mode untuk footer links */
+body.dark-mode .footer-section a {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+body.dark-mode .footer-section a:hover {
+  color: #BDD8F1;
+}
+
+/* Dark mode untuk social links */
+body.dark-mode .social-links a {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+body.dark-mode .social-links a:hover {
+  background: #3667A6;
+}
+
+/* Dark mode untuk search bar (jika ada) */
+body.dark-mode .search-bar {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+body.dark-mode .search-bar input {
+  color: white;
+}
+
+body.dark-mode .search-bar input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Dark mode untuk read more button */
+body.dark-mode .read-more-btn {
+  background: #3667A6;
+  border-color: #3667A6;
+}
+
+body.dark-mode .read-more-btn:hover {
+  background: #60a5fa;
+  border-color: #60a5fa;
+}
+
+/* Dark mode untuk card category badge */
+body.dark-mode .card-category {
+  background: rgba(54, 103, 166, 0.9);
+}
+
+body.dark-mode .kompas-badge {
+  background: rgba(220, 38, 38, 0.9) !important;
+}
+
+/* Ensure proper contrast for text in dark mode */
+body.dark-mode .footer-bottom {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+body.dark-mode .footer-section h3 {
+  color: #BDD8F1;
+}
+
+/* Dark mode untuk widget content */
+body.dark-mode .sidebar-widget p {
+  color: #94a3b8;
+}
+
+body.dark-mode .sidebar-widget code {
+  background: #334155;
+  color: #e2e8f0;
+}
+
+/* Responsive dark mode adjustments */
+@media (max-width: 768px) {
+  body.dark-mode .nav-menu {
+    background: rgba(30, 41, 59, 0.95);
+    border-radius: 8px;
+    padding: 8px;
+  }
+}
+
+/* Animation untuk mode transition */
+body.light-mode,
+body.dark-mode {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.light-mode *,
+body.dark-mode * {
+  transition: background-color 0.3s ease, 
+              color 0.3s ease, 
+              border-color 0.3s ease,
+              box-shadow 0.3s ease;
 }

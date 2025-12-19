@@ -6,8 +6,13 @@
  * @returns {string} - Background image filename
  */
 function getWeatherBackground(weatherData) {
+  // Helper function to get asset path
+  const getAssetPath = (filename) => {
+    return window.getAssetPath ? window.getAssetPath('assets/' + filename) : 'assets/' + filename;
+  };
+
   if (!weatherData || !weatherData.current) {
-    return 'bg.jpg'; // Default background
+    return getAssetPath('bg.jpg'); // Default background
   }
 
   const condition = weatherData.current.condition.text.toLowerCase();
@@ -36,12 +41,12 @@ function getWeatherBackground(weatherData) {
   
   // Decision logic
   if (isClear && cloudCover < 40) {
-    return 'bg2.jpg'; // Clear/Sunny background
+    return getAssetPath('bg2.jpg'); // Clear/Sunny background
   } else if (isCloudy || cloudCover >= 40) {
-    return 'bg.jpg'; // Cloudy/Overcast background
+    return getAssetPath('bg.jpg'); // Cloudy/Overcast background
   } else {
     // Default based on cloud cover
-    return cloudCover < 40 ? 'bg2.jpg' : 'bg.jpg';
+    return cloudCover < 40 ? getAssetPath('bg2.jpg') : getAssetPath('bg.jpg');
   }
 }
 
@@ -53,8 +58,11 @@ function applyWeatherBackground(backgroundImage) {
   const weatherApp = document.querySelector('.weather-app');
   const errorContainer = document.querySelector('.error-container');
   
+  // backgroundImage should already be a full path from getWeatherBackground
+  const backgroundUrl = backgroundImage.startsWith('url(') ? backgroundImage : `url("${backgroundImage}")`;
+  
   if (weatherApp) {
-    weatherApp.style.backgroundImage = `url("assets/${backgroundImage}")`;
+    weatherApp.style.backgroundImage = backgroundUrl;
     
     // Add smooth transition
     weatherApp.style.transition = 'background-image 1s ease-in-out';
@@ -63,7 +71,7 @@ function applyWeatherBackground(backgroundImage) {
   }
   
   if (errorContainer) {
-    errorContainer.style.backgroundImage = `url("assets/${backgroundImage}")`;
+    errorContainer.style.backgroundImage = backgroundUrl;
     errorContainer.style.transition = 'background-image 1s ease-in-out';
   }
 }
@@ -95,6 +103,11 @@ function updateWeatherBackground(weatherData) {
  * @returns {Object} - Category info
  */
 function getWeatherCategory(weatherData) {
+  // Helper function to get asset path
+  const getAssetPath = (filename) => {
+    return window.getAssetPath ? window.getAssetPath('assets/' + filename) : 'assets/' + filename;
+  };
+
   if (!weatherData || !weatherData.current) {
     return { category: 'unknown', icon: '❓', description: 'Unknown' };
   }
@@ -108,56 +121,56 @@ function getWeatherCategory(weatherData) {
       category: 'clear', 
       icon: '☀️', 
       description: 'Clear Sky',
-      background: 'bg2.jpg'
+      background: getAssetPath('bg2.jpg')
     };
   } else if (condition.includes('partly cloudy')) {
     return { 
       category: 'partly-cloudy', 
       icon: '⛅', 
       description: 'Partly Cloudy',
-      background: cloudCover < 40 ? 'bg2.jpg' : 'bg.jpg'
+      background: cloudCover < 40 ? getAssetPath('bg2.jpg') : getAssetPath('bg.jpg')
     };
   } else if (condition.includes('cloudy') || condition.includes('overcast')) {
     return { 
       category: 'cloudy', 
       icon: '☁️', 
       description: 'Cloudy',
-      background: 'bg.jpg'
+      background: getAssetPath('bg.jpg')
     };
   } else if (condition.includes('rain') || condition.includes('drizzle')) {
     return { 
       category: 'rainy', 
       icon: '🌧️', 
       description: 'Rainy',
-      background: 'bg.jpg'
+      background: getAssetPath('bg.jpg')
     };
   } else if (condition.includes('thunder') || condition.includes('storm')) {
     return { 
       category: 'stormy', 
       icon: '⛈️', 
       description: 'Stormy',
-      background: 'bg.jpg'
+      background: getAssetPath('bg.jpg')
     };
   } else if (condition.includes('snow') || condition.includes('blizzard')) {
     return { 
       category: 'snowy', 
       icon: '❄️', 
       description: 'Snowy',
-      background: 'bg.jpg'
+      background: getAssetPath('bg.jpg')
     };
   } else if (condition.includes('mist') || condition.includes('fog')) {
     return { 
       category: 'foggy', 
       icon: '🌫️', 
       description: 'Foggy',
-      background: 'bg.jpg'
+      background: getAssetPath('bg.jpg')
     };
   } else {
     return { 
       category: 'other', 
       icon: '🌤️', 
       description: condition,
-      background: cloudCover < 40 ? 'bg2.jpg' : 'bg.jpg'
+      background: cloudCover < 40 ? getAssetPath('bg2.jpg') : getAssetPath('bg.jpg')
     };
   }
 }

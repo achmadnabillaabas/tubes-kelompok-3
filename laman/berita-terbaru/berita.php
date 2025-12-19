@@ -415,8 +415,9 @@ if ($totalArticles === 0) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Berita Cuaca Kekinian</title>
   <link rel="stylesheet" href="style.css">
+  <script src="dark-mode.js" defer></script>
 </head>
-<body>
+<body class="light-mode">
 
 <!-- HEADER -->
 <header class="site-header">
@@ -424,6 +425,9 @@ if ($totalArticles === 0) {
     <div class="logo">📰 Berita Cuaca Kekinian</div>
     <nav class="nav-menu">
       <a href="?page=1">Refresh</a>
+      <button id="darkModeToggle" class="dark-mode-toggle" title="Toggle Dark Mode">
+        <span class="toggle-icon">🌙</span>
+      </button>
     </nav>
   </div>
 </header>

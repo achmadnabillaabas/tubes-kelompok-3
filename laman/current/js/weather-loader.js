@@ -9,7 +9,8 @@ async function fetchWeatherData(query) {
   try {
     showLoadingState();
     
-    const url = `api/api-weather.php?${query.includes(',') ? `lat=${query.split(',')[0]}&lon=${query.split(',')[1]}` : `city=${encodeURIComponent(query)}`}`;
+    const apiPath = `api/api-weather.php?${query.includes(',') ? `lat=${query.split(',')[0]}&lon=${query.split(',')[1]}` : `city=${encodeURIComponent(query)}`}`;
+    const url = window.getAssetPath ? window.getAssetPath(apiPath) : apiPath;
     
     console.log('Fetching weather from:', url);
     

@@ -4,10 +4,11 @@ use PHPUnit\Framework\TestCase;
 class FileTypeTest extends TestCase
 {
     private $projectFiles = [
-        'home/home.php',
+        'laman/home/home.php',
         'laman/berita-terbaru/berita.php',
-        'current/current.php',
-        'forecast/index.php'
+        'laman/current/current.php',
+        'laman/forecast/index.php',
+        'main.php',
     ];
 
     /**

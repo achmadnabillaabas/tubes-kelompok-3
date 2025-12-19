@@ -1,0 +1,182 @@
+/* Main CSS for main.php wrapper and responsive tweaks */
+:root{
+  --max-width:1200px;
+  --bg: #ffffff;
+  --muted:#6c757d;
+}
+
+/* Universal header styles */
+body { 
+    margin: 0; 
+    padding: 0; 
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #1a1f2e;
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+.universal-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10000;
+    background: rgba(26, 31, 46, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px 0;
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-brand {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.header-brand:hover {
+    color: #4a9eff;
+}
+
+.header-nav {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.header-nav a {
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+    border: 1px solid transparent;
+}
+
+.header-nav a:hover {
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.header-nav a.active {
+    color: #ffffff;
+    background: rgba(74, 158, 255, 0.8);
+    border-color: rgba(74, 158, 255, 1);
+}
+
+.main-content {
+    margin-top: 80px;
+    min-height: calc(100vh - 80px);
+}
+
+.main-content.fullscreen {
+    margin-top: 0;
+    min-height: 100vh;
+}
+
+/* Background for all pages */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #1a1f2e;
+    background-image: url('../laman/current/assets/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    z-index: -2;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+}
+
+.main-content {
+    position: relative;
+    z-index: 1;
+}
+
+footer { 
+    padding: 1rem 0; 
+    background: rgba(26, 31, 46, 0.95);
+    color: rgba(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    z-index: 1;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .header-container {
+        padding: 0 15px;
+    }
+    
+    .header-brand {
+        font-size: 20px;
+    }
+    
+    .header-nav {
+        gap: 4px;
+    }
+    
+    .header-nav a {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+}
+
+.container{max-width:var(--max-width);}
+
+/* Header adjustments */
+.navbar-brand{font-weight:700}
+.navbar-nav .nav-link{color:rgba(255,255,255,0.95)}
+.navbar-nav .nav-link.active{color:#fff}
+
+/* Main content spacing */
+main.container{padding-top:1.5rem;padding-bottom:1.5rem}
+
+/* Responsive helpers for small screens */
+@media (max-width: 576px){
+  body{font-size:15px}
+  .navbar-brand{font-size:1rem}
+  .nav-link{padding-left:.5rem;padding-right:.5rem}
+}
+
+/* Accessibility focus states */
+a:focus,button:focus{outline:3px solid rgba(13,110,253,.25);outline-offset:2px}
+
+/* Small utilities used by included pages */
+.text-center-vertical{display:flex;align-items:center;justify-content:center}
+
+/* Make images responsive inside included pages */
+img{max-width:100%;height:auto}
+
+/* Ensure modals and overlays have high z-index */
+.modal, .modal-backdrop{z-index:1050}
+
+/* Smooth scroll behavior for anchor navigation */
+html{scroll-behavior:smooth}

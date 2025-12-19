@@ -35,7 +35,7 @@ function loadEnvFile($path) {
 
 // Fetch weather data from WeatherAPI
 function getWeatherData($query) {
-    $envPath = dirname(__DIR__, 2) . '/1.env';
+    $envPath = dirname(__DIR__, 3) . '/1.env';
     $env = loadEnvFile($envPath);
     $apiKey = $env['current_api'] ?? $env['CURRENT_API'] ?? null;
 

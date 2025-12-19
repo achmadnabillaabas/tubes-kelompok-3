@@ -309,76 +309,110 @@ function setupEventListeners() {
     
     // Unit toggle
     const unitToggle = document.getElementById('unitToggle');
-    unitToggle.addEventListener('click', () => {
-        // Visual feedback
-        unitToggle.style.transform = 'scale(0.9)';
-        setTimeout(() => {
-            unitToggle.style.transform = 'scale(1)';
-        }, 150);
-        
-        WeatherUI.toggleUnit();
-        
-        // Show feedback
-        const unit = WeatherUI.currentUnit === 'C' ? 'Celsius' : 'Fahrenheit';
-        showSuccessMessage(`Unit suhu diubah ke ${unit}`);
-    });
+    if (unitToggle) {
+        unitToggle.addEventListener('click', () => {
+            // Visual feedback
+            try {
+                unitToggle.style.transform = 'scale(0.9)';
+                setTimeout(() => {
+                    unitToggle.style.transform = 'scale(1)';
+                }, 150);
+            } catch (e) {
+                // ignore visual errors
+            }
+
+            WeatherUI.toggleUnit();
+
+            // Show feedback
+            const unit = WeatherUI.currentUnit === 'C' ? 'Celsius' : 'Fahrenheit';
+            showSuccessMessage(`Unit suhu diubah ke ${unit}`);
+        });
+    } else {
+        console.warn('Unit toggle element not found: #unitToggle');
+    }
     
     // Hourly view toggle
     const viewCards = document.getElementById('viewCards');
     const viewChart = document.getElementById('viewChart');
-    
-    viewCards.addEventListener('click', () => {
-        showHourlyView('cards');
-        viewCards.classList.add('active');
-        viewChart.classList.remove('active');
-    });
-    
-    viewChart.addEventListener('click', () => {
-        showHourlyView('chart');
-        viewChart.classList.add('active');
-        viewCards.classList.remove('active');
-    });
+    if (viewCards && viewChart) {
+        viewCards.addEventListener('click', () => {
+            showHourlyView('cards');
+            viewCards.classList.add('active');
+            viewChart.classList.remove('active');
+        });
+
+        viewChart.addEventListener('click', () => {
+            showHourlyView('chart');
+            viewChart.classList.add('active');
+            viewCards.classList.remove('active');
+        });
+    } else {
+        if (!viewCards) console.warn('Element not found: #viewCards');
+        if (!viewChart) console.warn('Element not found: #viewChart');
+    }
     
     // Hourly slider arrows
     const hourlyPrev = document.getElementById('hourlyPrev');
     const hourlyNext = document.getElementById('hourlyNext');
     const hourlyCardsWrapper = document.getElementById('hourlyCardsWrapper');
-    
-    hourlyPrev.addEventListener('click', () => {
-        hourlyCardsWrapper.scrollBy({ left: -300, behavior: 'smooth' });
-    });
-    
-    hourlyNext.addEventListener('click', () => {
-        hourlyCardsWrapper.scrollBy({ left: 300, behavior: 'smooth' });
-    });
+    if (hourlyPrev && hourlyNext && hourlyCardsWrapper) {
+        hourlyPrev.addEventListener('click', () => {
+            hourlyCardsWrapper.scrollBy({ left: -300, behavior: 'smooth' });
+        });
+
+        hourlyNext.addEventListener('click', () => {
+            hourlyCardsWrapper.scrollBy({ left: 300, behavior: 'smooth' });
+        });
+    } else {
+        if (!hourlyPrev) console.warn('Element not found: #hourlyPrev');
+        if (!hourlyNext) console.warn('Element not found: #hourlyNext');
+        if (!hourlyCardsWrapper) console.warn('Element not found: #hourlyCardsWrapper');
+    }
     
     // Center map button
     const centerMapBtn = document.getElementById('centerMapBtn');
-    centerMapBtn.addEventListener('click', () => {
-        WeatherMap.centerToLocation(currentLocation.lat, currentLocation.lon);
-    });
+    if (centerMapBtn) {
+        centerMapBtn.addEventListener('click', () => {
+            if (typeof WeatherMap !== 'undefined' && WeatherMap.centerToLocation) {
+                WeatherMap.centerToLocation(currentLocation.lat, currentLocation.lon);
+            } else {
+                console.warn('WeatherMap not available to center map');
+            }
+        });
+    } else {
+        console.warn('Element not found: #centerMapBtn');
+    }
     
-    // Smooth scroll for navigation
+    // Smooth scroll for navigation — only handle in-page anchors (href starting with '#')
     document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const targetId = link.getAttribute('href');
-            const targetSection = document.querySelector(targetId);
-            
-            if (targetSection) {
-                // Offset for fixed navbar
-                const navbarHeight = document.getElementById('navbar').offsetHeight;
-                const targetPosition = targetSection.offsetTop - navbarHeight - 20;
-                
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
-                });
+            const href = link.getAttribute('href') || '';
+
+            // If it's a hash anchor, handle smooth scrolling; otherwise allow normal navigation
+            if (href.charAt(0) === '#') {
+                e.preventDefault();
+                try {
+                    const targetSection = document.querySelector(href);
+                    if (targetSection) {
+                        const navbar = document.getElementById('navbar');
+                        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                        const targetPosition = targetSection.offsetTop - navbarHeight - 20;
+                        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                    }
+                } catch (err) {
+                    // Invalid selector (shouldn't happen for proper #ids) — ignore safely
+                    console.warn('Invalid anchor selector, skipping smooth scroll:', href, err);
+                }
+
+                // Update active class for anchors
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            } else {
+                // Non-hash links (e.g. ?page=...) — don't prevent default, let browser navigate.
+                // Add active class briefly; page reload will update state.
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
             }
-            
-            // Update active link
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
         });
     });
     

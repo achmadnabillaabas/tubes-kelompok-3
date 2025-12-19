@@ -1,7 +1,5 @@
 <?php
 // index.php
-
-// Load API key from env file (1.env)
 function loadEnvFile($path) {
     $env = [];
     if (!file_exists($path)) return $env;
@@ -20,7 +18,27 @@ function loadEnvFile($path) {
     return $env;
 }
 
-$env = loadEnvFile(__DIR__ . '/../1.env');
+// Try to locate the env file up the directory tree (supports moved folder)
+function findEnvFile() {
+    $dir = __DIR__;
+    // search up to 4 levels up
+    for ($i = 0; $i < 5; $i++) {
+        $candidate = $dir . DIRECTORY_SEPARATOR . '1.env';
+        if (file_exists($candidate)) return $candidate;
+        $parent = dirname($dir);
+        if ($parent === $dir) break;
+        $dir = $parent;
+    }
+    return null;
+}
+
+$envPath = findEnvFile();
+if ($envPath) {
+    $env = loadEnvFile($envPath);
+} else {
+    // fallback to original relative path
+    $env = loadEnvFile(__DIR__ . '/../1.env');
+}
 $apiKey = isset($env['current_api']) ? $env['current_api'] : '';
 
 // Fetch weather data from WeatherAPI
@@ -645,11 +663,11 @@ $weatherData = getWeatherData($searchQuery);
             });
         });
 
-        // Preload critical resources
+        // Preload critical resources (correct path to stylesheet)
         const link = document.createElement('link');
         link.rel = 'preload';
         link.as = 'style';
-        link.href = 'style.css';
+        link.href = 'css/style.css';
         document.head.appendChild(link);
     </script>
 </body>

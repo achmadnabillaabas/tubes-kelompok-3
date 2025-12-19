@@ -1,8 +1,9 @@
 <?php
 $env = [];
 $possible = [
-    __DIR__ . '/../2.env',
-    __DIR__ . '/2.env'
+    __DIR__ . '/../../2.env',  // Root directory (2 levels up)
+    __DIR__ . '/../2.env',     // One level up
+    __DIR__ . '/2.env'         // Current directory
 ];
 foreach ($possible as $p) {
     if (file_exists($p)) {
@@ -238,6 +239,12 @@ $home_api = $env['home_api'] ?? '';
     <!-- Inject API key from server (2.env) into client JS -->
     <script>
     window.HOME_API_KEY = '<?php echo addslashes($home_api); ?>';
+    // Debug information
+    console.log('API Key loaded:', window.HOME_API_KEY ? 'YES' : 'NO');
+    console.log('API Key length:', window.HOME_API_KEY ? window.HOME_API_KEY.length : 0);
+    <?php if (empty($home_api)): ?>
+    console.error('API Key is empty! Check 2.env file.');
+    <?php endif; ?>
     </script>
     <!-- Custom JS -->
     <script src="js/weather.js"></script>

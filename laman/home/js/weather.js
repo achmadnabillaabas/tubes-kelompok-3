@@ -133,9 +133,14 @@ function getWeatherBackground(weatherData) {
   const main = weatherData.main;
   const description = weatherData.description.toLowerCase();
 
+  // Helper function to get absolute image path
+  const getImgPath = (filename) => {
+    return window.getAssetPath ? window.getAssetPath('img/' + filename) : 'img/' + filename;
+  };
+
   // Check for specific cloud conditions
   if (main === "Clear") {
-    return "img/clear.jpg";
+    return getImgPath("clear.jpg");
   } else if (main === "Clouds") {
     // few clouds = sedikit berawan (11-25%)
     // scattered clouds = berawan tersebar (25-50%)
@@ -145,9 +150,9 @@ function getWeatherBackground(weatherData) {
       description.includes("few clouds") ||
       description.includes("sedikit berawan")
     ) {
-      return "img/default.jpg";
+      return getImgPath("default.jpg");
     } else {
-      return "img/clouds.jpg";
+      return getImgPath("clouds.jpg");
     }
   } else if (main === "Rain") {
     // light rain = hujan ringan/rintik-rintik
@@ -158,25 +163,25 @@ function getWeatherBackground(weatherData) {
       description.includes("hujan ringan") ||
       description.includes("rintik")
     ) {
-      return "img/drizzle.jpg";
+      return getImgPath("drizzle.jpg");
     } else {
-      return "img/rain.jpg";
+      return getImgPath("rain.jpg");
     }
   } else if (main === "Drizzle") {
-    return "img/drizzle.jpg";
+    return getImgPath("drizzle.jpg");
   } else if (main === "Thunderstorm") {
-    return "img/thunderstorm.jpg";
+    return getImgPath("thunderstorm.jpg");
   } else if (main === "Snow") {
-    return "img/snow.jpg";
+    return getImgPath("snow.jpg");
   } else if (main === "Mist") {
-    return "img/mist.jpg";
+    return getImgPath("mist.jpg");
   } else if (main === "Fog") {
-    return "img/fog.jpg";
+    return getImgPath("fog.jpg");
   } else if (main === "Haze") {
-    return "img/haze.jpg";
+    return getImgPath("haze.jpg");
   }
 
-  return "img/default.jpg";
+  return getImgPath("default.jpg");
 }
 
 async function loadPopularCities() {
