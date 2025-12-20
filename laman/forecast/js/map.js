@@ -1,11 +1,6 @@
 /**
- * Map Module - Inisialisasi peta Leaflet
+ * Simple Map Module - Peta sederhana untuk menampilkan lokasi
  */
-
-// Check if Leaflet is loaded
-if (typeof L === 'undefined') {
-    console.warn('Leaflet not loaded yet');
-}
 
 const WeatherMap = {
     map: null,
@@ -14,9 +9,11 @@ const WeatherMap = {
     currentLon: CONFIG.defaultLon,
 
     /**
-     * Initialize Leaflet map
+     * Initialize simple map
      */
     initMap(lat, lon) {
+        console.log('🗺️ Initializing simple map...');
+        
         // Check if Leaflet is available
         if (typeof L === 'undefined') {
             console.warn('Leaflet not available, skipping map');
@@ -37,98 +34,134 @@ const WeatherMap = {
                     maxZoom: 18
                 }).addTo(this.map);
 
-                // Add marker
-                this.marker = L.marker([lat, lon]).addTo(this.map);
-                this.marker.bindPopup('Lokasi Anda').openPopup();
-            } else {
-                // Update existing map
-                this.map.setView([lat, lon], 10);
-                this.marker.setLatLng([lat, lon]);
-                this.marker.bindPopup('Lokasi Anda').openPopup();
+                console.log('✅ Map tiles loaded');
             }
 
-            // Map initialized successfully
-            console.log('Map initialized for location display');
+            // Add or update marker
+            this.updateMarker(lat, lon);
+            
+            console.log('✅ Map initialized successfully');
         } catch (error) {
-            console.error('Error initializing map:', error);
+            console.error('❌ Error initializing map:', error);
         }
     },
 
+    /**
+     * Update marker position
+     */
+    updateMarker(lat, lon, locationName = 'Lokasi Anda') {
+        // Remove existing marker
+        if (this.marker) {
+            this.map.removeLayer(this.marker);
+        }
 
+        // Add new marker
+        this.marker = L.marker([lat, lon]).addTo(this.map);
+        this.marker.bindPopup(`📍 ${locationName}`).openPopup();
+        
+        // Center map to new location
+        this.map.setView([lat, lon], 10);
+        
+        console.log(`✅ Marker updated to: ${locationName} (${lat.toFixed(4)}, ${lon.toFixed(4)})`);
+    },
+
+    /**
+     * Update map with new location
+     */
+    updateLocation(lat, lon, locationName = 'Lokasi Baru') {
+        console.log(`🗺️ Updating map location: ${locationName}`);
+        
+        if (!this.map) {
+            this.initMap(lat, lon);
+        } else {
+            this.updateMarker(lat, lon, locationName);
+        }
+        
+        this.currentLat = lat;
+        this.currentLon = lon;
+    },
 
     /**
      * Center map to current location
      */
     centerToLocation(lat, lon) {
         if (this.map) {
-            this.currentLat = lat;
-            this.currentLon = lon;
             this.map.setView([lat, lon], 10);
-            this.marker.setLatLng([lat, lon]);
-            this.marker.bindPopup('Lokasi Anda').openPopup();
+            console.log('✅ Map centered to location');
         }
-    },
-
-    /**
-     * Add custom marker with weather info
-     */
-    addWeatherMarker(lat, lon, weatherData) {
-        if (this.marker) {
-            this.map.removeLayer(this.marker);
-        }
-
-        // Create custom icon
-        const customIcon = L.divIcon({
-            className: 'custom-weather-marker',
-            html: `
-                <div style="
-                    background: white;
-                    padding: 8px;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                    text-align: center;
-                    font-family: 'Poppins', sans-serif;
-                ">
-                    <img src="${weatherData.iconUrl}" style="width: 40px; height: 40px;">
-                    <div style="font-weight: bold; color: #214177;">${weatherData.temp}°C</div>
-                </div>
-            `,
-            iconSize: [80, 80],
-            iconAnchor: [40, 40]
-        });
-
-        this.marker = L.marker([lat, lon], { icon: customIcon }).addTo(this.map);
-        
-        const popupContent = `
-            <div style="font-family: 'Poppins', sans-serif;">
-                <h3 style="margin: 0 0 8px 0; color: #214177;">${weatherData.location}</h3>
-                <p style="margin: 4px 0;"><strong>Suhu:</strong> ${weatherData.temp}°C</p>
-                <p style="margin: 4px 0;"><strong>Kondisi:</strong> ${weatherData.description}</p>
-                <p style="margin: 4px 0;"><strong>Kelembapan:</strong> ${weatherData.humidity}%</p>
-                <p style="margin: 4px 0;"><strong>Angin:</strong> ${weatherData.windSpeed} m/s</p>
-            </div>
-        `;
-        
-        this.marker.bindPopup(popupContent).openPopup();
     }
 };
 
-// Add custom CSS for map markers
-const mapStyle = document.createElement('style');
-mapStyle.textContent = `
-    .custom-weather-marker {
-        background: transparent !important;
-        border: none !important;
+// Initialize map when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        if (typeof L !== 'undefined') {
+            console.log('🗺️ Starting map initialization...');
+            
+            // Use current location if available
+            if (window.currentLocation) {
+                WeatherMap.initMap(window.currentLocation.lat, window.currentLocation.lon);
+            } else {
+                WeatherMap.initMap(CONFIG.defaultLat, CONFIG.defaultLon);
+            }
+            
+            // Setup center map button
+            const centerMapBtn = document.getElementById('centerMapBtn');
+            if (centerMapBtn) {
+                centerMapBtn.addEventListener('click', () => {
+                    console.log('🎯 Center map button clicked');
+                    
+                    if (window.currentLocation) {
+                        WeatherMap.centerToLocation(window.currentLocation.lat, window.currentLocation.lon);
+                    } else {
+                        WeatherMap.centerToLocation(CONFIG.defaultLat, CONFIG.defaultLon);
+                    }
+                });
+                console.log('✅ Center map button ready');
+            }
+        } else {
+            console.warn('⚠️ Leaflet not available');
+        }
+    }, 1500); // Wait a bit longer for everything to load
+});
+
+// Global function to update map when location changes
+window.updateMapLocation = (lat, lon, locationName) => {
+    console.log(`🗺️ Global map update: ${locationName} (${lat}, ${lon})`);
+    
+    if (WeatherMap) {
+        WeatherMap.updateLocation(lat, lon, locationName);
+    } else {
+        console.warn('⚠️ WeatherMap not available');
+    }
+};
+
+// Also update when weather data is loaded
+window.addEventListener('weatherDataLoaded', (event) => {
+    const { lat, lon, locationName } = event.detail;
+    console.log('🗺️ Weather data loaded event received');
+    
+    if (WeatherMap) {
+        WeatherMap.updateLocation(lat, lon, locationName);
+    }
+});
+
+// Debug function to test map
+window.testMap = () => {
+    console.log('🧪 Testing map functionality...');
+    console.log('Leaflet available:', typeof L !== 'undefined');
+    console.log('WeatherMap object:', WeatherMap);
+    console.log('Map element:', document.getElementById('weatherMap'));
+    
+    if (WeatherMap && !WeatherMap.map) {
+        console.log('🔧 Initializing map manually...');
+        WeatherMap.initMap(CONFIG.defaultLat, CONFIG.defaultLon);
     }
     
-    .leaflet-popup-content-wrapper {
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    if (WeatherMap && WeatherMap.map) {
+        console.log('✅ Map is working!');
+        WeatherMap.updateLocation(-6.2088, 106.8456, 'Jakarta, Indonesia');
+    } else {
+        console.log('❌ Map not working');
     }
-    
-    .leaflet-popup-content {
-        margin: 12px;
-        font-size: 14px;
-    }
-`;
-document.head.appendChild(mapStyle);
+};

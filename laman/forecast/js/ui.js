@@ -357,6 +357,19 @@ const WeatherUI = {
             card.style.animationDelay = `${index * 0.1}s`;
             card.style.cursor = 'pointer';
             
+            // Add data attributes for easier debugging and event handling
+            card.setAttribute('data-day-index', index);
+            card.setAttribute('data-day-name', day.dayName);
+            card.setAttribute('data-date', day.dateStr);
+            
+            console.log(`📊 Created daily card ${index}:`, {
+                dayName: day.dayName,
+                dateStr: day.dateStr,
+                maxTemp: day.maxTemp,
+                minTemp: day.minTemp,
+                pop: day.pop
+            });
+            
             const emoji = this.getWeatherEmoji(day.condition, false, day.description);
             
             // Format day name for better display
@@ -380,9 +393,30 @@ const WeatherUI = {
             `;
             
             // Add click event listener for modal with REAL data
-            card.addEventListener('click', () => {
-                console.log(`🔍 Opening detail for day ${index}: ${day.dayName}`);
-                this.showDailyDetail(day, index);
+            card.addEventListener('click', (e) => {
+                console.log(`🔍 Daily card clicked! Day ${index}: ${day.dayName}`);
+                console.log('Card element:', card);
+                console.log('Day data:', day);
+                console.log('Event:', e);
+                
+                // Prevent event bubbling
+                e.stopPropagation();
+                e.preventDefault();
+                
+                // Add visual feedback
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 150);
+                
+                try {
+                    console.log('🚀 Attempting to show daily detail...');
+                    this.showDailyDetail(day, index);
+                    console.log('✅ showDailyDetail called successfully');
+                } catch (error) {
+                    console.error('❌ Error showing daily detail:', error);
+                    console.error('Error stack:', error.stack);
+                }
             });
             
             container.appendChild(card);
@@ -606,17 +640,72 @@ const WeatherUI = {
      * Show daily detail modal with 24-hour forecast from REAL API data
      */
     showDailyDetail(dayData, dayIndex) {
+        console.log(`🔍 === SHOW DAILY DETAIL START ===`);
+        console.log(`🔍 showDailyDetail called for day ${dayIndex}:`, dayData);
+        console.log('🔍 Current forecast data available:', !!this.currentForecastData);
+        
         const modal = document.getElementById('dailyDetailModal');
+        console.log('🔍 Modal element:', modal);
+        
+        if (!modal) {
+            console.error('❌ Daily detail modal not found!');
+            alert('Modal tidak ditemukan! Periksa HTML.');
+            return;
+        }
+        
+        console.log('✅ Modal element found:', modal);
+        console.log('🔍 Modal current classes:', modal.className);
+        console.log('🔍 Modal current display:', getComputedStyle(modal).display);
+
         const modalTitle = document.getElementById('modalTitle');
+        const modalLocation = document.getElementById('modalLocation');
+        const modalDate = document.getElementById('modalDate');
         const modalMaxTemp = document.getElementById('modalMaxTemp');
         const modalMinTemp = document.getElementById('modalMinTemp');
         const modalIcon = document.getElementById('modalIcon');
         const modalCondition = document.getElementById('modalCondition');
         const modalRainProb = document.getElementById('modalRainProb');
+        const modalWind = document.getElementById('modalWind');
+        const modalHumidity = document.getElementById('modalHumidity');
+        const modalLastUpdate = document.getElementById('modalLastUpdate');
         const hourlyGrid = document.getElementById('hourlyDetailGrid');
 
-        // Set modal title
+        // Check if all required elements exist
+        const requiredElements = {
+            modalTitle, modalLocation, modalDate, modalMaxTemp, modalMinTemp,
+            modalIcon, modalCondition, modalRainProb, modalWind, modalHumidity,
+            modalLastUpdate, hourlyGrid
+        };
+        
+        const missingElements = Object.entries(requiredElements)
+            .filter(([name, element]) => !element)
+            .map(([name]) => name);
+            
+        if (missingElements.length > 0) {
+            console.error('❌ Missing modal elements:', missingElements);
+            alert(`Modal elements tidak lengkap: ${missingElements.join(', ')}`);
+            return;
+        }
+
+        console.log('✅ All modal elements found, populating data...');
+
+        // Get current location info
+        const currentLocationName = document.getElementById('locationName')?.textContent || 'Lokasi Tidak Diketahui';
+        
+        // Format date properly
+        const dayDate = new Date(dayData.date);
+        const options = { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        };
+        const formattedDate = dayDate.toLocaleDateString('id-ID', options);
+
+        // Set modal header info
         modalTitle.textContent = `Detail Prediksi ${dayData.dayName}`;
+        modalLocation.textContent = `📍 ${currentLocationName}`;
+        modalDate.textContent = formattedDate;
         
         // Set summary data
         modalMaxTemp.textContent = `${dayData.maxTemp}°`;
@@ -625,6 +714,18 @@ const WeatherUI = {
         modalIcon.alt = dayData.description;
         modalCondition.textContent = dayData.description;
         modalRainProb.textContent = `${dayData.pop}%`;
+        
+        // Set additional weather details
+        modalWind.textContent = dayData.windSpeed ? `${dayData.windSpeed} m/s` : '--';
+        modalHumidity.textContent = dayData.humidity ? `${dayData.humidity}%` : '--%';
+        
+        // Set last update time
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('id-ID', { 
+            hour: '2-digit', 
+            minute: '2-digit' 
+        });
+        modalLastUpdate.textContent = `Diperbarui: ${timeString}`;
 
         // Get REAL hourly data from API for this specific day
         console.log(`📊 Loading REAL hourly data for day ${dayIndex}: ${dayData.dayName}`);
@@ -634,7 +735,7 @@ const WeatherUI = {
         hourlyGrid.innerHTML = '';
         
         if (hourlyData.length === 0) {
-            hourlyGrid.innerHTML = '<div style="padding: 20px; text-align: center; color: #999;">Data per jam tidak tersedia untuk hari ini</div>';
+            hourlyGrid.innerHTML = '<div class="no-data-message">Data per jam tidak tersedia untuk hari ini</div>';
         } else {
             hourlyData.forEach(hour => {
                 const card = document.createElement('div');
@@ -647,6 +748,7 @@ const WeatherUI = {
                     <div class="hour-icon">${emoji}</div>
                     <div class="hour-temp">${hour.temp}°</div>
                     <div class="hour-rain">💧 ${hour.pop}%</div>
+                    <div class="hour-wind">💨 ${hour.windSpeed || 0} m/s</div>
                     <div class="hour-condition">${hour.description}</div>
                 `;
                 
@@ -656,47 +758,300 @@ const WeatherUI = {
             console.log(`✅ Displayed ${hourlyData.length} hours of REAL data for ${dayData.dayName}`);
         }
 
-        // Show modal
+        // Show modal with smooth animation
+        console.log('🎬 === SHOWING MODAL ===');
+        console.log('🎬 Modal before show - classes:', modal.className);
+        console.log('🎬 Modal before show - display:', getComputedStyle(modal).display);
+        console.log('🎬 Body overflow before:', document.body.style.overflow);
+        
+        // Force show modal
         modal.classList.add('show');
+        modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.zIndex = '99999';
         document.body.style.overflow = 'hidden';
+        
+        console.log('🎬 Modal after show - classes:', modal.className);
+        console.log('🎬 Modal after show - display:', getComputedStyle(modal).display);
+        console.log('🎬 Modal after show - opacity:', getComputedStyle(modal).opacity);
+        console.log('🎬 Modal after show - z-index:', getComputedStyle(modal).zIndex);
+        console.log('🎬 Body overflow after:', document.body.style.overflow);
+        
+        // Add smooth entrance animation
+        setTimeout(() => {
+            const modalContent = modal.querySelector('.modal-content');
+            if (modalContent) {
+                modalContent.style.transform = 'scale(1) translateY(0)';
+                console.log('✅ Modal animation applied');
+            } else {
+                console.error('❌ Modal content not found for animation');
+            }
+        }, 10);
+        
+        // Test if modal is visible
+        setTimeout(() => {
+            const rect = modal.getBoundingClientRect();
+            console.log('🔍 Modal position after 100ms:', rect);
+            console.log('🔍 Modal visible?', rect.width > 0 && rect.height > 0);
+        }, 100);
+        
+        console.log('✅ Modal displayed successfully for:', dayData.dayName);
+        console.log('🔍 Final modal classes:', modal.className);
+        console.log('🔍 Final body overflow:', document.body.style.overflow);
+        console.log(`🔍 === SHOW DAILY DETAIL END ===`);
     },
 
     /**
-     * Get REAL hourly data for specific day from API forecast data
-     * Generate complete 24-hour data (01:00-24:00) based on available API data
+     * Get REAL hourly data for specific day - menggunakan data yang sama dengan prediksi 24 jam utama
+     * Disesuaikan dengan lokasi dan hari yang real
      */
     getRealHourlyDataForDay(dayData, dayIndex) {
+        console.log(`📊 Getting hourly data for day ${dayIndex}: ${dayData.dayName}`);
+        console.log(`📊 Target date: ${dayData.date}`);
+        
         // Check if we have forecast data
         if (!this.currentForecastData || !this.currentForecastData.hourly) {
             console.warn('⚠️ No forecast data available');
-            return this.generateComplete24Hours(dayData);
+            return this.generateFallback24Hours(dayData);
         }
 
         const allHourlyData = this.currentForecastData.hourly;
-        const targetDate = dayData.date;
+        console.log(`📊 Total hourly data available: ${allHourlyData.length} hours`);
         
-        // For today (dayIndex 0), get data starting from current hour
+        // Get current location info for consistency
+        const currentLocationName = document.getElementById('locationName')?.textContent || 'Unknown Location';
+        console.log(`📍 Current location: ${currentLocationName}`);
+        
+        // For today (dayIndex 0), use the same logic as main hourly forecast
         if (dayIndex === 0) {
-            console.log('📊 Generating 24-hour data for today from API');
-            return this.generateComplete24Hours(dayData, allHourlyData, 0);
+            console.log('📊 Processing today - using same logic as main hourly forecast');
+            return this.generateTodayHourlyData(allHourlyData, dayData);
         }
         
-        // For future days, filter hourly data by date
+        // For future days, filter hourly data by specific date
+        const targetDate = new Date(dayData.date);
         const dayStart = new Date(targetDate);
         dayStart.setHours(0, 0, 0, 0);
         
         const dayEnd = new Date(targetDate);
         dayEnd.setHours(23, 59, 59, 999);
         
+        console.log(`📊 Filtering data for date range: ${dayStart.toISOString()} to ${dayEnd.toISOString()}`);
+        
         const dayHourlyData = allHourlyData.filter(hour => {
             const hourDate = new Date(hour.dt * 1000);
             return hourDate >= dayStart && hourDate <= dayEnd;
         });
         
-        console.log(`📊 Found ${dayHourlyData.length} hours of REAL API data for ${dayData.dayName}`);
+        console.log(`📊 Found ${dayHourlyData.length} hours of API data for ${dayData.dayName}`);
+        console.log(`📊 Sample filtered data:`, dayHourlyData.slice(0, 3));
         
-        // Generate complete 24-hour data using available API data
-        return this.generateComplete24Hours(dayData, dayHourlyData, dayIndex);
+        // Generate complete 24-hour data using the same method as main forecast
+        return this.generateComplete24HoursFromFiltered(dayData, dayHourlyData, dayIndex);
+    },
+
+    /**
+     * Generate today's hourly data - menggunakan logika yang SAMA PERSIS dengan prediksi 24 jam utama
+     */
+    generateTodayHourlyData(allHourlyData, dayData) {
+        console.log('📊 Generating today hourly data using EXACT same logic as main forecast');
+        
+        // Convert API hourly data to the same format used by main forecast
+        const formattedHourlyData = allHourlyData.map(hour => {
+            const hourDate = new Date(hour.dt * 1000);
+            return {
+                hour: hourDate.getHours(),
+                temp: hour.temp || hour.main?.temp || dayData.maxTemp,
+                condition: hour.weather?.[0]?.main || hour.condition || dayData.condition,
+                description: hour.weather?.[0]?.description || hour.description || dayData.description,
+                pop: hour.pop ? Math.round(hour.pop * 100) : 0,
+                humidity: hour.main?.humidity || hour.humidity || 50,
+                windSpeed: hour.wind?.speed || hour.windSpeed || 0
+            };
+        });
+        
+        console.log(`📊 Formatted ${formattedHourlyData.length} hours for main forecast logic`);
+        
+        // Use the EXACT same function as main hourly forecast
+        const result = this.generate24HoursFromAPI(formattedHourlyData);
+        
+        // Convert back to the format expected by popup (00:00-23:00 instead of next 24 hours)
+        const popup24Hours = [];
+        
+        for (let hour = 0; hour < 24; hour++) {
+            const timeString = `${hour.toString().padStart(2, '0')}:00`;
+            
+            // Find matching data from main forecast result
+            let matchingData = result.find(item => {
+                const itemHour = item.hour;
+                return itemHour === hour;
+            });
+            
+            if (matchingData) {
+                popup24Hours.push({
+                    time: timeString,
+                    hour: hour,
+                    temp: Math.round(matchingData.temp),
+                    condition: matchingData.condition,
+                    description: matchingData.description,
+                    isNight: hour < 6 || hour > 18,
+                    pop: matchingData.pop,
+                    humidity: matchingData.humidity || 50,
+                    windSpeed: Math.round(matchingData.windSpeed || 0)
+                });
+            } else {
+                // Use interpolation if no exact match
+                popup24Hours.push(this.generateInterpolatedHour(hour, dayData, new Map()));
+            }
+        }
+        
+        console.log(`✅ Generated ${popup24Hours.length} hours using main forecast logic`);
+        console.log(`📊 Sample popup hours:`, popup24Hours.slice(0, 3));
+        
+        return popup24Hours;
+    },
+
+    /**
+     * Generate complete 24-hour data from filtered API data
+     */
+    generateComplete24HoursFromFiltered(dayData, filteredHourlyData, dayIndex) {
+        const result = [];
+        
+        console.log(`📊 Generating 24-hour data for ${dayData.dayName} from ${filteredHourlyData.length} filtered hours`);
+        
+        // Create map of filtered API data by hour
+        const apiMap = new Map();
+        filteredHourlyData.forEach(hour => {
+            const hourDate = new Date(hour.dt * 1000);
+            const hourNum = hourDate.getHours();
+            apiMap.set(hourNum, {
+                hour: hourNum,
+                temp: hour.temp || hour.main?.temp || dayData.maxTemp,
+                condition: hour.weather?.[0]?.main || hour.condition || dayData.condition,
+                description: hour.weather?.[0]?.description || hour.description || dayData.description,
+                pop: hour.pop ? Math.round(hour.pop * 100) : Math.round(dayData.pop || 0),
+                humidity: hour.main?.humidity || hour.humidity || dayData.humidity || 50,
+                windSpeed: hour.wind?.speed || hour.windSpeed || 0,
+                isNight: hourNum < 6 || hourNum > 18
+            });
+        });
+        
+        console.log(`📊 API data mapped for hours: ${Array.from(apiMap.keys()).sort((a,b) => a-b).join(', ')}`);
+        
+        // Generate complete 24 hours (00:00 to 23:00)
+        for (let hour = 0; hour < 24; hour++) {
+            const timeString = `${hour.toString().padStart(2, '0')}:00`;
+            
+            if (apiMap.has(hour)) {
+                // Use real API data
+                const apiData = apiMap.get(hour);
+                console.log(`✅ Using real API data for ${timeString}`);
+                
+                result.push({
+                    time: timeString,
+                    hour: hour,
+                    temp: Math.round(apiData.temp),
+                    condition: apiData.condition,
+                    description: apiData.description,
+                    isNight: apiData.isNight,
+                    pop: apiData.pop,
+                    humidity: apiData.humidity,
+                    windSpeed: Math.round(apiData.windSpeed)
+                });
+            } else {
+                // Generate interpolated data
+                result.push(this.generateInterpolatedHour(hour, dayData, apiMap));
+            }
+        }
+        
+        console.log(`✅ Generated complete 24-hour data: ${result.length} hours`);
+        console.log(`📊 Sample hours:`, result.slice(0, 3), '...', result.slice(-3));
+        
+        return result;
+    },
+
+    /**
+     * Generate interpolated hour data when API data is not available
+     */
+    generateInterpolatedHour(hour, dayData, apiMap) {
+        const timeString = `${hour.toString().padStart(2, '0')}:00`;
+        const isNight = hour < 6 || hour > 18;
+        
+        // Find nearest available hours for interpolation
+        let nearestBefore = null;
+        let nearestAfter = null;
+        
+        for (let [apiHour, apiData] of apiMap) {
+            if (apiHour < hour && (!nearestBefore || apiHour > nearestBefore.hour)) {
+                nearestBefore = apiData;
+            }
+            if (apiHour > hour && (!nearestAfter || apiHour < nearestAfter.hour)) {
+                nearestAfter = apiData;
+            }
+        }
+        
+        // Interpolate temperature
+        let interpolatedTemp;
+        if (nearestBefore && nearestAfter) {
+            // Linear interpolation between two points
+            const ratio = (hour - nearestBefore.hour) / (nearestAfter.hour - nearestBefore.hour);
+            interpolatedTemp = Math.round(nearestBefore.temp + (nearestAfter.temp - nearestBefore.temp) * ratio);
+        } else {
+            // Use daily temperature pattern (realistic curve)
+            const tempRange = dayData.maxTemp - dayData.minTemp;
+            // Peak temperature around 14:00, minimum around 06:00
+            const tempOffset = Math.sin((hour - 6) * Math.PI / 12) * (tempRange / 2);
+            interpolatedTemp = Math.round(dayData.minTemp + (tempRange / 2) + tempOffset);
+        }
+        
+        // Use nearest data for other properties or fallback to daily data
+        const referenceData = nearestBefore || nearestAfter || {};
+        
+        console.log(`🔄 Interpolated data for ${timeString}: ${interpolatedTemp}°C`);
+        
+        return {
+            time: timeString,
+            hour: hour,
+            temp: interpolatedTemp,
+            condition: referenceData.condition || dayData.condition,
+            description: referenceData.description || dayData.description,
+            isNight: isNight,
+            pop: referenceData.pop || Math.round(dayData.pop || 0),
+            humidity: referenceData.humidity || dayData.humidity || 50,
+            windSpeed: Math.round(referenceData.windSpeed || 0)
+        };
+    },
+
+    /**
+     * Generate fallback 24-hour data when no API data is available
+     */
+    generateFallback24Hours(dayData) {
+        console.log('🔄 Generating fallback 24-hour data');
+        const result = [];
+        
+        for (let hour = 0; hour < 24; hour++) {
+            const timeString = `${hour.toString().padStart(2, '0')}:00`;
+            const isNight = hour < 6 || hour > 18;
+            
+            // Generate realistic temperature curve
+            const tempRange = dayData.maxTemp - dayData.minTemp;
+            const tempOffset = Math.sin((hour - 6) * Math.PI / 12) * (tempRange / 2);
+            const temp = Math.round(dayData.minTemp + (tempRange / 2) + tempOffset);
+            
+            result.push({
+                time: timeString,
+                hour: hour,
+                temp: temp,
+                condition: dayData.condition,
+                description: dayData.description,
+                isNight: isNight,
+                pop: Math.round(dayData.pop || 0),
+                humidity: dayData.humidity || 50,
+                windSpeed: 0
+            });
+        }
+        
+        return result;
     },
 
     /**
@@ -926,10 +1281,23 @@ const WeatherUI = {
      */
     hideDailyDetail() {
         const modal = document.getElementById('dailyDetailModal');
-        if (modal) {
-            modal.classList.remove('show');
-            document.body.style.overflow = 'auto';
-            console.log('✅ Modal closed');
+        if (modal && modal.classList.contains('show')) {
+            // Add smooth exit animation
+            const modalContent = modal.querySelector('.modal-content');
+            modalContent.style.transform = 'scale(0.95) translateY(-20px)';
+            modalContent.style.opacity = '0';
+            
+            // Hide modal after animation
+            setTimeout(() => {
+                modal.classList.remove('show');
+                document.body.style.overflow = 'auto';
+                
+                // Reset transform for next time
+                modalContent.style.transform = 'scale(0.95) translateY(20px)';
+                modalContent.style.opacity = '1';
+            }, 200);
+            
+            console.log('✅ Modal closed with animation');
         }
     },
 
@@ -939,6 +1307,13 @@ const WeatherUI = {
     setupDailyDetailModal() {
         const modal = document.getElementById('dailyDetailModal');
         const closeBtn = document.getElementById('closeModal');
+
+        if (!modal || !closeBtn) {
+            console.error('❌ Modal elements not found during setup');
+            return;
+        }
+
+        console.log('✅ Setting up daily detail modal event listeners');
 
         // Close modal events
         closeBtn.addEventListener('click', () => this.hideDailyDetail());
@@ -955,5 +1330,201 @@ const WeatherUI = {
                 this.hideDailyDetail();
             }
         });
+
+        // Event delegation for daily cards (primary method)
+        const dailyListContainer = document.getElementById('dailyList');
+        if (dailyListContainer) {
+            dailyListContainer.addEventListener('click', (e) => {
+                const dailyCard = e.target.closest('.daily-card');
+                if (dailyCard) {
+                    console.log('🔍 Daily card clicked via delegation!', dailyCard);
+                    
+                    const dayIndex = parseInt(dailyCard.getAttribute('data-day-index'));
+                    const dayName = dailyCard.getAttribute('data-day-name');
+                    
+                    console.log(`📊 Day index: ${dayIndex}, Day name: ${dayName}`);
+                    
+                    // Get the day data from current forecast data
+                    if (this.currentForecastData && this.currentForecastData.daily && this.currentForecastData.daily[dayIndex]) {
+                        const dayData = this.currentForecastData.daily[dayIndex];
+                        console.log('✅ Using forecast data for delegation:', dayData);
+                        this.showDailyDetail(dayData, dayIndex);
+                    } else {
+                        console.warn('⚠️ No forecast data available for delegation');
+                        console.log('Current forecast data:', this.currentForecastData);
+                    }
+                }
+            });
+            console.log('✅ Event delegation set up on #dailyList');
+        } else {
+            console.error('❌ #dailyList container not found for event delegation');
+        }
+
+        console.log('✅ Daily detail modal setup complete');
+        
+        // Add debugging function to window for testing
+        window.testModal = () => {
+            console.log('🧪 Testing modal visibility...');
+            const modal = document.getElementById('dailyDetailModal');
+            if (modal) {
+                console.log('Modal found:', modal);
+                console.log('Modal classes:', modal.className);
+                console.log('Modal computed style display:', getComputedStyle(modal).display);
+                
+                // Force show modal for testing
+                modal.classList.add('show');
+                modal.classList.add('modal-debug');
+                console.log('Modal classes after adding show:', modal.className);
+                
+                setTimeout(() => {
+                    modal.classList.remove('show');
+                    modal.classList.remove('modal-debug');
+                    console.log('Modal hidden after test');
+                }, 3000);
+            } else {
+                console.error('Modal not found!');
+            }
+        };
+        
+        console.log('🧪 Test function added: window.testModal()');
+        
+        // Add daily card click test function
+        window.testDailyCardClick = () => {
+            console.log('🧪 Testing daily card click...');
+            const dailyCards = document.querySelectorAll('.daily-card');
+            console.log(`Found ${dailyCards.length} daily cards`);
+            
+            if (dailyCards.length > 0) {
+                const firstCard = dailyCards[0];
+                console.log('First card:', firstCard);
+                console.log('First card data attributes:', {
+                    dayIndex: firstCard.getAttribute('data-day-index'),
+                    dayName: firstCard.getAttribute('data-day-name'),
+                    date: firstCard.getAttribute('data-date')
+                });
+                
+                // Simulate click
+                firstCard.click();
+                console.log('✅ Simulated click on first daily card');
+            } else {
+                console.error('❌ No daily cards found');
+            }
+        };
+        
+        console.log('🧪 Test function added: window.testDailyCardClick()');
+        
+        // Add function to compare main forecast vs popup data
+        window.compareHourlyData = () => {
+            console.log('🧪 === COMPARING MAIN FORECAST VS POPUP DATA ===');
+            
+            if (!WeatherUI.currentForecastData || !WeatherUI.currentForecastData.hourly) {
+                console.error('❌ No forecast data available');
+                return;
+            }
+            
+            // Get main forecast data (same as displayed in main view)
+            const mainHourlyData = WeatherUI.currentForecastData.hourly.map(hour => {
+                const hourDate = new Date(hour.dt * 1000);
+                return {
+                    hour: hourDate.getHours(),
+                    temp: hour.temp || hour.main?.temp,
+                    condition: hour.weather?.[0]?.main || hour.condition,
+                    description: hour.weather?.[0]?.description || hour.description,
+                    pop: hour.pop ? Math.round(hour.pop * 100) : 0
+                };
+            });
+            
+            const mainFormatted = WeatherUI.generate24HoursFromAPI(mainHourlyData);
+            console.log('Main forecast (first 5 hours):', mainFormatted.slice(0, 5));
+            
+            // Get popup data for today
+            if (WeatherUI.currentForecastData.daily && WeatherUI.currentForecastData.daily[0]) {
+                const todayData = WeatherUI.currentForecastData.daily[0];
+                const popupData = WeatherUI.getRealHourlyDataForDay(todayData, 0);
+                console.log('Popup data (first 5 hours):', popupData.slice(0, 5));
+                
+                // Compare first few hours
+                console.log('=== COMPARISON ===');
+                for (let i = 0; i < Math.min(5, mainFormatted.length, popupData.length); i++) {
+                    const main = mainFormatted[i];
+                    const popup = popupData[i];
+                    console.log(`Hour ${i}:`);
+                    console.log(`  Main: ${main.time} - ${main.temp}°C - ${main.condition}`);
+                    console.log(`  Popup: ${popup.time} - ${popup.temp}°C - ${popup.condition}`);
+                    console.log(`  Match: ${main.temp === popup.temp && main.condition === popup.condition ? '✅' : '❌'}`);
+                }
+            }
+        };
+        
+        console.log('🧪 Comparison function added: window.compareHourlyData()');
+        
+        // Add manual modal test function
+        window.forceShowModal = () => {
+            console.log('🧪 === FORCE SHOW MODAL TEST ===');
+            
+            const modal = document.getElementById('dailyDetailModal');
+            if (!modal) {
+                console.error('❌ Modal not found!');
+                return;
+            }
+            
+            console.log('✅ Modal found, forcing display...');
+            
+            // Force show with all possible methods
+            modal.style.display = 'flex !important';
+            modal.style.opacity = '1 !important';
+            modal.style.zIndex = '99999 !important';
+            modal.style.position = 'fixed !important';
+            modal.style.top = '0 !important';
+            modal.style.left = '0 !important';
+            modal.style.width = '100% !important';
+            modal.style.height = '100% !important';
+            modal.style.background = 'rgba(0, 0, 0, 0.8) !important';
+            
+            modal.classList.add('show');
+            modal.classList.add('force-visible');
+            
+            document.body.style.overflow = 'hidden';
+            
+            console.log('Modal forced visible. Classes:', modal.className);
+            console.log('Modal computed display:', getComputedStyle(modal).display);
+            
+            // Add close handler
+            setTimeout(() => {
+                modal.addEventListener('click', () => {
+                    modal.style.display = 'none';
+                    modal.classList.remove('show', 'force-visible');
+                    document.body.style.overflow = 'auto';
+                    console.log('Modal closed');
+                });
+            }, 100);
+        };
+        
+        // Add function to test daily card click
+        window.testDailyCardClickForce = () => {
+            console.log('🧪 Testing daily card click with force...');
+            
+            const dailyCards = document.querySelectorAll('.daily-card');
+            console.log(`Found ${dailyCards.length} daily cards`);
+            
+            if (dailyCards.length > 0) {
+                const firstCard = dailyCards[0];
+                console.log('Clicking first card:', firstCard);
+                
+                // Simulate click with debugging
+                const event = new MouseEvent('click', {
+                    bubbles: true,
+                    cancelable: true,
+                    view: window
+                });
+                
+                firstCard.dispatchEvent(event);
+                console.log('✅ Click event dispatched');
+            } else {
+                console.error('❌ No daily cards found');
+            }
+        };
+        
+        console.log('🧪 Manual test functions added: window.forceShowModal(), window.testDailyCardClickForce()');
     }
 };

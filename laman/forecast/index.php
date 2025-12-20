@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="css/theme.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/professional-design.css">
+    <link rel="stylesheet" href="css/glassmorphism.css">
 </head>
 <body>
     <!-- HEADER / NAVBAR -->
@@ -48,34 +49,40 @@
 
     <!-- SECTION 1: HERO - CUACA SAAT INI -->
     <section id="hero" class="hero-section">
-        <!-- Professional decorative elements -->
-        <div class="floating-decoration decoration-1"></div>
-        <div class="floating-decoration decoration-2"></div>
-        <div class="floating-decoration decoration-3"></div>
-
         <div class="hero-content">
-            <div class="location-info">
-                <h2 id="locationName">Memuat lokasi...</h2>
-                <p id="lastUpdated">Diperbarui: --:--</p>
-            </div>
-
-            <div class="current-weather">
-                <div class="temp-main">
-                    <span id="currentTemp" class="temperature">--</span>
-                    <span class="temp-unit">°C</span>
-                </div>
-                <div class="weather-icon-main">
-                    <img id="weatherIcon" src="" alt="Weather Icon">
+            <!-- Kotak blur 1: Location info -->
+            <div class="blur-container location-container">
+                <div class="location-info">
+                    <h2 id="locationName">Memuat lokasi...</h2>
+                    <p id="lastUpdated">Diperbarui: --:--</p>
                 </div>
             </div>
 
-            <div class="weather-description">
-                <p id="weatherDesc" class="desc-main">--</p>
-                <p id="feelsLike" class="feels-like">Terasa seperti --°C</p>
-                <p id="weatherSummary" class="summary">Memuat data cuaca...</p>
+            <!-- Kotak blur 2: Current weather -->
+            <div class="blur-container weather-container">
+                <div class="current-weather">
+                    <div class="temp-main">
+                        <span id="currentTemp" class="temperature">--</span>
+                        <span class="temp-unit">°C</span>
+                    </div>
+                    <div class="weather-icon-main">
+                        <img id="weatherIcon" src="" alt="Weather Icon">
+                    </div>
+                </div>
             </div>
 
-            <div class="mini-stats">
+            <!-- Kotak blur 3: Weather description -->
+            <div class="blur-container description-container">
+                <div class="weather-description">
+                    <p id="weatherDesc" class="desc-main">--</p>
+                    <p id="feelsLike" class="feels-like">Terasa seperti --°C</p>
+                    <p id="weatherSummary" class="summary">Memuat data cuaca...</p>
+                </div>
+            </div>
+
+            <!-- Kotak blur 4: Mini stats -->
+            <div class="blur-container stats-container">
+                <div class="mini-stats">
                 <div class="stat-card">
                     <div class="stat-icon">💧</div>
                     <div class="stat-info">
@@ -302,11 +309,18 @@
     <div id="dailyDetailModal" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 id="modalTitle">Detail Prediksi Hari Ini</h2>
+                <div class="modal-header-info">
+                    <h2 id="modalTitle">Detail Prediksi Hari Ini</h2>
+                    <p id="modalLocation" class="modal-location">📍 Loading...</p>
+                    <p id="modalDate" class="modal-date">Loading...</p>
+                </div>
                 <button id="closeModal" class="close-btn">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="daily-summary">
+                    <div class="summary-main-icon">
+                        <img id="modalIcon" src="" alt="Weather Icon">
+                    </div>
                     <div class="summary-info">
                         <div class="summary-temp">
                             <span id="modalMaxTemp">36°</span>
@@ -314,12 +328,24 @@
                             <span id="modalMinTemp">21°</span>
                         </div>
                         <div class="summary-condition">
-                            <img id="modalIcon" src="" alt="Weather Icon">
                             <span id="modalCondition">Hujan Petir</span>
                         </div>
-                        <div class="summary-rain">
-                            <span class="rain-icon">💧</span>
-                            <span id="modalRainProb">75%</span>
+                        <div class="summary-details">
+                            <div class="summary-detail-item">
+                                <span class="detail-icon">💧</span>
+                                <span class="detail-label">Hujan:</span>
+                                <span id="modalRainProb" class="detail-value">75%</span>
+                            </div>
+                            <div class="summary-detail-item">
+                                <span class="detail-icon">💨</span>
+                                <span class="detail-label">Angin:</span>
+                                <span id="modalWind" class="detail-value">-- m/s</span>
+                            </div>
+                            <div class="summary-detail-item">
+                                <span class="detail-icon">💦</span>
+                                <span class="detail-label">Kelembapan:</span>
+                                <span id="modalHumidity" class="detail-value">--%</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -330,6 +356,10 @@
                     </div>
                 </div>
             </div>
+            <div class="modal-footer">
+                <p class="modal-footer-source">Data cuaca dari <strong>OpenWeatherMap</strong></p>
+                <p id="modalLastUpdate" class="modal-footer-update">Diperbarui: --:--</p>
+            </div>
         </div>
     </div>
 
@@ -338,13 +368,6 @@
         <div class="spinner"></div>
         <p>Memuat data cuaca...</p>
     </div>
-
-    <!-- Demo Mode Notice -->
-    <?php if (WEATHER_API_KEY === 'DEMO_MODE'): ?>
-    <div id="demoNotice" style="position: fixed; top: 70px; left: 50%; transform: translateX(-50%); background: #ff9800; color: white; padding: 10px 20px; border-radius: 5px; z-index: 10000; font-size: 14px;">
-        🔧 Mode Demo - Data simulasi | <a href="GET_API_KEY.md" target="_blank" style="color: white; text-decoration: underline;">Cara dapatkan API key</a>
-    </div>
-    <?php endif; ?>
 
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
@@ -367,10 +390,11 @@
         };
 
         console.log('CONFIG loaded:', CONFIG);
-        // Validasi API key
-        if (!CONFIG.apiKey || CONFIG.apiKey === 'DEMO_MODE' || CONFIG.apiKey.length < 10) {
-            console.warn('⚠️ API key tidak valid atau dalam mode demo!');
-            console.warn('API key saat ini:', CONFIG.apiKey ? CONFIG.apiKey.substring(0, 10) + '...' : 'KOSONG');
+        // Validasi API key - HANYA REAL API KEY
+        if (!CONFIG.apiKey || CONFIG.apiKey.length < 10) {
+            console.error('⚠️ API key tidak valid atau kosong!');
+            console.error('API key saat ini:', CONFIG.apiKey ? CONFIG.apiKey.substring(0, 10) + '...' : 'KOSONG');
+            console.error('📝 Periksa file forecast/3.env dan pastikan API_KEY_FORECAST berisi API key yang valid');
         } else {
             console.log('✅ API key terdeteksi:', CONFIG.apiKey.substring(0, 10) + '...');
         }
@@ -384,6 +408,7 @@
     <script src="js/ui.js"></script>
     <script src="js/charts.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/weather-background.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>
