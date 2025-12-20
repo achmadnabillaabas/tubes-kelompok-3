@@ -1,0 +1,178 @@
+/**
+ * Glassmorphism Design System
+ * Modern glass-like UI components with blur effects
+ */
+
+/* ===== GLASSMORPHISM BASE ===== */
+.glass {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.glass-strong {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.glass-light {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ===== GLASSMORPHISM CARDS ===== */
+.glass-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.glass-card:hover {
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-2px);
+}
+
+/* ===== GLASSMORPHISM BUTTONS ===== */
+.glass-button {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.glass-button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.glass-button:active {
+    transform: scale(0.98);
+}
+
+/* ===== GLASSMORPHISM CONTAINERS ===== */
+.glass-container {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    padding: 24px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== GLASSMORPHISM NAVBAR ===== */
+.glass-navbar {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== GLASSMORPHISM MODAL ===== */
+.glass-modal {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.2);
+}
+
+/* ===== GLASSMORPHISM OVERLAY ===== */
+.glass-overlay {
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* ===== DARK MODE GLASSMORPHISM ===== */
+[data-theme="dark"] .glass {
+    background: rgba(45, 45, 45, 0.8);
+    border-color: rgba(74, 144, 226, 0.3);
+}
+
+[data-theme="dark"] .glass-card {
+    background: rgba(45, 45, 45, 0.85);
+    border-color: rgba(74, 144, 226, 0.3);
+}
+
+[data-theme="dark"] .glass-card:hover {
+    background: rgba(45, 45, 45, 0.95);
+    border-color: rgba(74, 144, 226, 0.4);
+}
+
+[data-theme="dark"] .glass-button {
+    background: rgba(74, 144, 226, 0.2);
+    border-color: rgba(74, 144, 226, 0.4);
+}
+
+[data-theme="dark"] .glass-button:hover {
+    background: rgba(74, 144, 226, 0.3);
+    border-color: rgba(74, 144, 226, 0.5);
+}
+
+[data-theme="dark"] .glass-container {
+    background: rgba(45, 45, 45, 0.9);
+    border-color: rgba(74, 144, 226, 0.25);
+}
+
+[data-theme="dark"] .glass-modal {
+    background: rgba(45, 45, 45, 0.95);
+    border-color: rgba(74, 144, 226, 0.3);
+}
+
+/* ===== RESPONSIVE GLASSMORPHISM ===== */
+@media (max-width: 768px) {
+    .glass-card {
+        padding: 15px;
+        border-radius: 14px;
+    }
+    
+    .glass-container {
+        padding: 18px;
+        border-radius: 16px;
+    }
+    
+    .glass-button {
+        padding: 8px 16px;
+        border-radius: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .glass-card {
+        padding: 12px;
+        border-radius: 12px;
+    }
+    
+    .glass-container {
+        padding: 15px;
+        border-radius: 14px;
+    }
+    
+    .glass-button {
+        padding: 6px 12px;
+        border-radius: 8px;
+    }
+}
